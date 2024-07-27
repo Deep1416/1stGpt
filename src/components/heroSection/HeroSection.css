@@ -1,0 +1,12 @@
+/* .herosection{
+    background-image: url(./../../../public/herosection-1.jpg);
+    width: 1349px;
+    /* height: 100vh; */
+    /* height: 100px; */
+    
+    .herosection{
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    }

@@ -1,0 +1,23 @@
+/* Gallery.css */
+.image {
+  transition: transform 0.3s ease-in-out;
+}
+
+.image:hover {
+  transform: scale(1.5);
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* semi-transparent black */
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.relative:hover .overlay {
+  opacity: 1;
+}

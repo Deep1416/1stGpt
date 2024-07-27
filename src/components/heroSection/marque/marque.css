@@ -1,0 +1,44 @@
+.marquee {
+  overflow: hidden;
+  white-space: nowrap;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  height: 50px; /* Adjust height as needed */
+}
+
+.marquee-content {
+  display: flex;
+  animation: marquee 15s linear infinite;
+}
+
+.marquee-content.paused {
+  animation-play-state: paused;
+}
+
+.marquee-item {
+  border-radius: 10px;
+  background-color: #1D2329;
+  padding: 5px 20px;
+  margin: 0 5px;
+  color: white;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .marquee-item {
+    padding: 5px 10px;
+    font-size: 14px;
+  }
+}
