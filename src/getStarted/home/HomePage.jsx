@@ -1,51 +1,106 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import axios from "axios";
 
 const HomePage = () => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [messages, setMessages] = useState([
+    { type: "user", text: "What is chatBot?" },
+    {
+      type: "bot",
+      text: "At the most basic level, a chatbot is a computer program that simulates and processes human conversation (either written or spoken), allowing humans to interact with digital devices as if they were communicating with a real person. Chatbots can be as simple as rudimentary programs that answer a simple query with a single-line response, or as sophisticated as digital assistants that learn and evolve to deliver increasing levels of personalization as they gather and process information.",
+    },
+    { type: "user", text: "How do chatbots work?" },
+    {
+      type: "bot",
+      text: "Chatbots boost operational efficiency and bring cost savings to businesses while offering convenience and added services to internal employees and external customers. They allow companies to easily resolve many types of customer queries and issues while reducing the need for human interaction.",
+    },
+  ]);
+  const [input, setInput] = useState("");
+  const messagesEndRef = useRef(null);
 
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
+  const fetchResponse = async (query) => {
+    try {
+      const response = await axios.post("YOUR_API_ENDPOINT", {
+        prompt: query,
+        // Add other necessary parameters for your API
+      });
+      const reply = response.data.reply; // Adjust based on your API response format
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { type: "bot", text: reply },
+      ]);
+    } catch (error) {
+      console.error("Error fetching response:", error);
+    }
   };
 
+  const handleSend = () => {
+    if (input.trim()) {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { type: "user", text: input },
+      ]);
+      fetchResponse(input);
+      setInput("");
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSend();
+    }
+  };
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
   return (
-    <div className="relative p-6 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold mb-4">Chat Bot Definition</h1>
-      <div className="bg-gray-100 p-4 rounded-lg shadow-md mb-6">
-        <h2 className="text-xl font-semibold mb-2">YOU</h2>
-        <p className="text-base mb-4">What is a chat bot?</p>
-        <h2 className="text-xl font-semibold mb-2">BOT</h2>
-        <p className="text-base">
-          At the most basic level, a chatbot is a computer program that simulates and processes human conversation (either written or spoken), allowing humans to interact with digital devices as if they were communicating with a real person. Chatbots can be as simple as rudimentary programs that answer a simple query with a single-line response, or as sophisticated as digital assistants that learn and evolve to deliver increasing levels of personalization as they gather and process information.
-        </p>
+    <div className="pt-[38px] flex flex-col z-10 bg-[#1f1f2e] min-h-screen justify-end">
+      <div className=" min-w-[1400px] px-10 my-0 mx-auto text-white ">
+        <h1 className="mb-[23px] text-[22px] font-semibold text-[#c0bcca] font-heebo">
+          Chat Bot Definition
+        </h1>
+        <div className="w-full max-w-[1400px] px-10 mx-auto space-y-4 overflow-y-auto mb-20">
+          {messages.map((msg, index) => (
+            <div
+              key={index}
+              className={`bg-[#2d2d3d] p-4 rounded-lg ${
+                msg.type === "user" ? "self-end" : "self-start"
+              }`}
+            >
+              <div className="flex items-center space-x-2">
+                <span
+                  className={`${
+                    msg.type === "user"
+                      ? "bg-[#7966e4] text-[#1f1f2e]"
+                      : "bg-[#464657] text-[#2d2d3d]"
+                  } px-3 py-1 rounded-full font-bold`}
+                >
+                  {msg.type === "user" ? "YOU" : "BOT"}
+                </span>
+                <span className="text-lg font-medium">{msg.text}</span>
+              </div>
+            </div>
+          ))}
+          <div ref={messagesEndRef} />
+        </div>
+        <div className=" px-10 rounded-lg flex items-center fixed bottom-0 w-full max-w-[1400px] mx-auto left-0 right-0">
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyPress={handleKeyPress}
+            placeholder="Send a message..."
+            className="bg-[#1f1f2e] text-white px-4 py-2 w-full rounded-l-lg outline-none"
+          />
+          <button
+            onClick={handleSend}
+            className="bg-[#7966e4] text-white px-4 py-2 rounded-r-lg"
+          >
+            Send
+          </button>
+        </div>
       </div>
-
-      <h1 className="text-3xl font-bold mb-4">How Do Chatbots Work?</h1>
-      <div className="bg-gray-100 p-4 rounded-lg shadow-md mb-6">
-        <h2 className="text-xl font-semibold mb-2">YOU</h2>
-        <p className="text-base mb-4">How do chatbots work?</p>
-        <h2 className="text-xl font-semibold mb-2">BOT</h2>
-        <p className="text-base">
-          Chatbots boost operational efficiency and bring cost savings to businesses while offering convenience and added services to internal employees and external customers. They allow companies to easily resolve many types of customer queries and issues while reducing the need for human interaction.
-        </p>
-      </div>
-
-      {/* Content area */}
-      {/* Main content goes here */}
-      <div className="flex-1 sticky bottom-16  w-full p-3 bg-white border-t border-gray-300 shadow-lg">
-      <input
-          type="text"
-          placeholder="Search..."
-          value={searchTerm}
-          onChange={handleSearchChange}
-          className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        
-      </div>
-
-      {/* Fixed Search Bar */}
-      {/* <div className="fixed bottom-0  w-full p-3 bg-white border-t border-gray-300 shadow-lg">
-       
-      </div> */}
     </div>
   );
 };

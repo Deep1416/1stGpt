@@ -1,67 +1,74 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BsJournalText } from "react-icons/bs";
 import { IoCubeOutline } from "react-icons/io5";
-import { FaRegImage } from "react-icons/fa";
+import { FaRegImage, FaBookmark } from "react-icons/fa";
 import { BsFileImage } from "react-icons/bs";
 import { IoVideocamOutline } from "react-icons/io5";
 import { LuPhone } from "react-icons/lu";
 import { BsFileMusic } from "react-icons/bs";
 import { MdOutlineFilterList } from "react-icons/md";
-import aiModals from "./../../store/aiModals";
+import aiModals from "./../../store/aiModals"; // Adjust the import path as needed
+import { FaRegBookmark } from "react-icons/fa6";
 
 const heading = [
-  {
-    id: 1,
-    icon: <IoCubeOutline />,
-    title: "All Models",
-  },
-  {
-    id: 2,
-    icon: <BsJournalText />,
-    title: "TEXT GENERATION",
-  },
-  {
-    id: 3,
-    icon: <FaRegImage />,
-    title: "TEXT TO IMAGE",
-  },
-  {
-    id: 4,
-    icon: <BsFileImage />,
-    title: "IMAGE TO TEXT",
-  },
-  {
-    id: 5,
-    icon: <BsFileImage />,
-    title: "IMAGE TO IMAGE",
-  },
-  {
-    id: 6,
-    icon: <IoVideocamOutline />,
-    title: "TEXT TO VIDEO",
-  },
-  {
-    id: 7,
-    icon: <LuPhone />,
-    title: "PHONE CALL",
-  },
-  {
-    id: 8,
-    icon: <BsFileMusic />,
-    title: "MUSIC MODELS",
-  },
+  { id: 1, icon: <IoCubeOutline />, title: "All Models" },
+  { id: 2, icon: <BsJournalText />, title: "TEXT GENERATION" },
+  { id: 3, icon: <FaRegImage />, title: "TEXT TO IMAGE" },
+  { id: 4, icon: <BsFileImage />, title: "IMAGE TO TEXT" },
+  { id: 5, icon: <BsFileImage />, title: "IMAGE TO IMAGE" },
+  { id: 6, icon: <IoVideocamOutline />, title: "TEXT TO VIDEO" },
+  { id: 7, icon: <LuPhone />, title: "PHONE CALL" },
+  { id: 8, icon: <BsFileMusic />, title: "MUSIC MODELS" },
+];
+
+const additionalImages = [
+  { id: 1, img: "/path/to/additional-image1.jpg", title: "Additional Image 1", disc: "Description for additional image 1" },
+  { id: 2, img: "/path/to/additional-image2.jpg", title: "Additional Image 2", disc: "Description for additional image 2" },
+  // Add more images as needed
 ];
 
 const Aimodals = () => {
-  const [selectedId, setSelectedId] = useState(null);
+  const [selectedId, setSelectedId] = useState(1);
   const [isFilterHovered, setIsFilterHovered] = useState(false);
+  const [filteredModals, setFilteredModals] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [bookmarkedItems, setBookmarkedItems] = useState(new Set());
+
+  useEffect(() => {
+    setLoading(true);
+    // Simulate a network request
+    setTimeout(() => {
+      if (selectedId === 1) {
+        setFilteredModals(aiModals);
+      } else {
+        const selectedHeading = heading.find((item) => item.id === selectedId);
+        const filtered = aiModals.filter((modal) =>
+          modal.categories.includes(selectedHeading.title)
+        );
+        setFilteredModals(filtered);
+      }
+      setLoading(false);
+    }, 500);
+  }, [selectedId]);
 
   const handleClick = (id) => {
     setSelectedId(id);
   };
 
+  const handleBookmark = (id) => {
+    setBookmarkedItems((prev) => {
+      const newBookmarks = new Set(prev);
+      if (newBookmarks.has(id)) {
+        newBookmarks.delete(id);
+      } else {
+        newBookmarks.add(id);
+      }
+      return newBookmarks;
+    });
+  };
+
   return (
-    <div>
+    <div className="bg-black">
       <div className="py-10 px-10">
         <div className="mb-7">
           <h1 className="text-[22px] font-semibold text-[#c0bcca] font-heebo">
@@ -141,7 +148,7 @@ const Aimodals = () => {
                   <MdOutlineFilterList className="text-xl" />
                 </div>
                 {isFilterHovered && (
-                  <div className="absolute top-full mt-2 right-0 w-[200px] bg-[#2b2830] border border-[#312e37] rounded-[5px] p-4 text-[#c0bcca]">
+                  <div className="absolute top-full mt-2 right-0 w-[200px] bg-[#2b2830] border border-[#312e37] rounded-[5px] p-4 text-[#c0bcca] z-50">
                     <p>Newest</p>
                     <p>Oldest</p>
                     <p>A - Z</p>
@@ -151,18 +158,32 @@ const Aimodals = () => {
             </div>
           </div>
         </div>
-        <div className="">
-          <div className="m-0 flex flex-wrap -ml-5">
-            {aiModals.map((item) => {
-              return (
+        {loading ? (
+          <div className="flex justify-center items-center min-h-[200px]">
+            <div className="loader text-white">Loading...</div>
+          </div>
+        ) : (
+          <div>
+            <div className="m-0 flex flex-wrap -ml-5">
+              {filteredModals.map((item) => (
                 <div key={item.id} className="w-[25%] pl-5 mb-5">
-                  <div className="border border-[#312e37] bg-[#17151b] rounded-[5px] min-h-full rounded-tl-[5px] rounded-tr-[5px]">
+                  <div className="border border-[#312e37] bg-[#17151b] rounded-[5px] min-h-full rounded-tl-[5px] rounded-tr-[5px] relative group">
                     <div className="-m-[1px] relative mb-0 rounded-tl-[5px] rounded-tr-[5px]">
                       <img
                         src={item.img}
                         alt=""
-                        className=" h-full w-full object-cover  rounded-tl-[5px] rounded-tr-[5px] max-w-full"
+                        className="h-full w-full object-cover rounded-tl-[5px] rounded-tr-[5px] max-w-full"
                       />
+                      <div
+                        className="absolute top-2 right-2 p-2 bg-[#2b2830] rounded-full text-[#c0bcca] cursor-pointer group-hover:block hidden"
+                        onClick={() => handleBookmark(item.id)}
+                      >
+                        {bookmarkedItems.has(item.id) ? (
+                          <FaBookmark className="text-xl" />
+                        ) : (
+                          <FaRegBookmark className="text-xl" />
+                        )}
+                      </div>
                     </div>
                     <div className="pt-[18px] px-[15px] pb-[14px]">
                       <h3 className="text-base font-medium font-heebo mb-[5px] text-[#17151b]">
@@ -186,10 +207,11 @@ const Aimodals = () => {
                     </div>
                   </div>
                 </div>
-              );
-            })}
+              ))}
+            </div>
+           
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
