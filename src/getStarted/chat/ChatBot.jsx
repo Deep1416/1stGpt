@@ -1,63 +1,106 @@
-import React, { useState } from 'react';
-import { FaUser, FaRobot } from 'react-icons/fa';
+import React, { useState, useEffect, useRef } from "react";
+import axios from "axios";
 
 const ChatBot = () => {
   const [messages, setMessages] = useState([
-    { type: 'user', text: 'What is a chat bot?' },
-    { type: 'bot', text: 'At the most basic level, a chatbot is a computer program that simulates and processes human conversation (either written or spoken), allowing humans to interact with digital devices as if they were communicating with a real person. Chatbots can be as simple as rudimentary programs that answer a simple query with a single-line response, or as sophisticated as digital assistants that learn and evolve to deliver increasing levels of personalization as they gather and process information.' },
-    { type: 'user', text: 'How do chatbots work?' },
-    { type: 'bot', text: 'Chatbots boost operational efficiency and bring cost savings to businesses while offering convenience and added services to internal employees and external customers. They allow companies to easily resolve many types of customer queries and issues while reducing the need for human interaction.' },
+    { type: "user", text: "What is chatBot?" },
+    {
+      type: "bot",
+      text: "At the most basic level, a chatbot is a computer program that simulates and processes human conversation (either written or spoken), allowing humans to interact with digital devices as if they were communicating with a real person. Chatbots can be as simple as rudimentary programs that answer a simple query with a single-line response, or as sophisticated as digital assistants that learn and evolve to deliver increasing levels of personalization as they gather and process information.",
+    },
+    { type: "user", text: "How do chatbots work?" },
+    {
+      type: "bot",
+      text: "Chatbots boost operational efficiency and bring cost savings to businesses while offering convenience and added services to internal employees and external customers. They allow companies to easily resolve many types of customer queries and issues while reducing the need for human interaction.",
+    },
   ]);
+  const [input, setInput] = useState("");
+  const messagesEndRef = useRef(null);
 
-  const [input, setInput] = useState('');
-
-  const handleSend = () => {
-    if (input.trim() === '') return;
-    setMessages([...messages, { type: 'user', text: input }]);
-    setInput('');
-    // Simulate bot response for demonstration
-    setTimeout(() => {
+  const fetchResponse = async (query) => {
+    try {
+      const response = await axios.post("YOUR_API_ENDPOINT", {
+        prompt: query,
+        // Add other necessary parameters for your API
+      });
+      const reply = response.data.reply; // Adjust based on your API response format
       setMessages((prevMessages) => [
         ...prevMessages,
-        { type: 'bot', text: 'This is a bot response.' }
+        { type: "bot", text: reply },
       ]);
-    }, 1000);
+    } catch (error) {
+      console.error("Error fetching response:", error);
+    }
   };
 
+  const handleSend = () => {
+    if (input.trim()) {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { type: "user", text: input },
+      ]);
+      fetchResponse(input);
+      setInput("");
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSend();
+    }
+  };
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
   return (
-    <div className="flex flex-col h-screen bg-gray-900 text-white">
-      <header className="p-4 border-b border-gray-700">
-        <h1 className="text-xl font-semibold">Chat Bot Definition</h1>
-      </header>
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages.map((message, index) => (
-          <div key={index} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div className={`flex items-center space-x-2 max-w-lg ${message.type === 'user' ? 'flex-row-reverse' : ''}`}>
-              {message.type === 'user' ? <FaUser className="text-xl" /> : <FaRobot className="text-xl" />}
-              <div className={`p-3 rounded-lg ${message.type === 'user' ? 'bg-purple-700' : 'bg-gray-800'}`}>
-                <p>{message.text}</p>
+    <div className="pt-[38px] flex flex-col z-10 bg-[#1f1f2e] min-h-screen justify-end">
+      <div className=" min-w-[1400px] px-10 my-0 mx-auto text-white ">
+        <h1 className="mb-[23px] text-[22px] font-semibold text-[#c0bcca] font-heebo">
+          Chat Bot Definition
+        </h1>
+        <div className="w-full max-w-[1400px] px-10 mx-auto space-y-4 overflow-y-auto mb-20">
+          {messages.map((msg, index) => (
+            <div
+              key={index}
+              className={`bg-[#2d2d3d] p-4 rounded-lg ${
+                msg.type === "user" ? "self-end" : "self-start"
+              }`}
+            >
+              <div className="flex items-center space-x-2">
+                <span
+                  className={`${
+                    msg.type === "user"
+                      ? "bg-[#7966e4] text-[#1f1f2e]"
+                      : "bg-[#464657] text-[#2d2d3d]"
+                  } px-3 py-1 rounded-full font-bold`}
+                >
+                  {msg.type === "user" ? "YOU" : "BOT"}
+                </span>
+                <span className="text-lg font-medium">{msg.text}</span>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
-      <footer className="p-4 border-t border-gray-700">
-        <div className="flex">
+          ))}
+          <div ref={messagesEndRef} />
+        </div>
+        <div className=" px-10 rounded-lg flex items-center fixed bottom-0 w-full max-w-[1400px] mx-auto left-0 right-0">
           <input
-            className="flex-1 p-2 rounded-l-lg bg-gray-800 border border-gray-700"
             type="text"
-            placeholder="Type your message..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
+            onKeyPress={handleKeyPress}
+            placeholder="Send a message..."
+            className="bg-[#1f1f2e] text-white px-4 py-2 w-full rounded-l-lg outline-none"
           />
           <button
-            className="p-2 bg-purple-700 hover:bg-purple-800 rounded-r-lg"
             onClick={handleSend}
+            className="bg-[#7966e4] text-white px-4 py-2 rounded-r-lg"
           >
             Send
           </button>
         </div>
-      </footer>
+      </div>
     </div>
   );
 };
