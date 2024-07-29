@@ -14,20 +14,16 @@ import { BiLogOut } from "react-icons/bi";
 import { IoCubeOutline } from "react-icons/io5";
 import { MdAdd } from "react-icons/md";
 
-const Sidebar = ({ isOpen, toggleSidebar }) => {
+const Sidebar = ({ isSidebarCollapsed, toggleSidebar }) => {
   return (
-    <div
-      className={`bg-[#17151b] fixed inset-y-0 left-0 text-white transform transition-transform duration-300 ${
-        isOpen ? "translate-x-0 w-[300px]" : "w-[90px]"
-      }`}
-    >
+    <>
       <div className="flex justify-between items-center h-[100px] px-4 border-b border-red-700 text-black">
         <h1 className="text-[30px] font-semibold text-[#c0bcca] font-heebo">
-        {isOpen === true ? "1stGPT": "1"}
+        {!isSidebarCollapsed === true ? "1stGPT": "1"}
         </h1>
         <div className="bg-[#2b2830] rounded-md">
           <button onClick={toggleSidebar} className="text-xl px-2 py-1 rounded">
-            {isOpen ? (
+            {!isSidebarCollapsed ? (
               <FaChevronLeft className="text-[#c0bcca]" />
             ) : (
               <FaChevronRight className="text-[#c0bcca]" />
@@ -40,7 +36,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           <div className="w-6 h-6 rounded-full bg-blue-500 flex justify-center items-center">
             <MdAdd className="text-white" />
           </div>
-          {isOpen && (
+          {!isSidebarCollapsed && (
             <div className="uppercase text-[14px] font-medium font-heebo">
               New chat
             </div>
@@ -48,47 +44,47 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         </div>
       </div>
       <div className="p-6 bg-gray-800">
-        {isOpen && <p className="text-[12px]">TODAY</p>}
+        {!isSidebarCollapsed && <p className="text-[12px]">TODAY</p>}
         <ul>
           <li className="p-2 hover:bg-gray-700 flex justify-between items-center space-x-2">
             <span>Chat Bot Definition</span>
-            {isOpen && <BsThreeDots />}
+            {!isSidebarCollapsed && <BsThreeDots />}
           </li>
           <li className="p-2 hover:bg-gray-700 flex justify-between items-center space-x-2">
             <span>Chat Bot Definition</span>
-            {isOpen && <BsThreeDots />}
+            {!isSidebarCollapsed && <BsThreeDots />}
           </li>
           <li className="p-2 hover:bg-gray-700 flex justify-between items-center space-x-2">
             <span>Essay Writing</span>
-            {isOpen && <BsThreeDots />}
+            {!isSidebarCollapsed && <BsThreeDots />}
           </li>
         </ul>
       </div>
-      <div className={`fixed bottom-0 left-0 right-0 ${isOpen ? "p-6" : "p-2"}`}>
+      <div className={`fixed bottom-0 left-0 right-0 ${!isSidebarCollapsed ? "p-6" : "p-2"}`}>
         <ul className="flex flex-col gap-1">
           <li className="flex items-center gap-2 py-1 px-2 rounded hover:bg-[#2b2830]">
             <GoHome className="text-xl" />
-            {isOpen && <span className="font-semibold">Clear Conversations</span>}
+            {!isSidebarCollapsed && <span className="font-semibold">Clear Conversations</span>}
           </li>
           <li className="flex items-center gap-2 py-1 px-2 rounded hover:bg-[#2b2830]">
             <MdOutlineGroups className="text-xl" />
-            {isOpen && <span>AI Models</span>}
+            {!isSidebarCollapsed && <span>AI Models</span>}
           </li>
           <li className="flex items-center gap-2 py-1 px-2 rounded hover:bg-[#2b2830]">
             <FaUser className="text-xl" />
-            {isOpen && <span>0 Credits</span>}
+            {!isSidebarCollapsed && <span>0 Credits</span>}
           </li>
           <li className="flex items-center gap-2 py-1 px-2 rounded hover:bg-[#2b2830]">
             <IoCubeOutline className="text-xl" />
-            {isOpen && <span>Affiliate Program</span>}
+            {!isSidebarCollapsed && <span>Affiliate Program</span>}
           </li>
           <li className="flex items-center gap-2 py-1 px-2 rounded hover:bg-[#2b2830]">
             <BiLogOut className="text-xl" />
-            {isOpen && <span>Login to get 50 credits</span>}
+            {!isSidebarCollapsed && <span>Login to get 50 credits</span>}
           </li>
         </ul>
       </div>
-    </div>
+    </>
   );
 };
 

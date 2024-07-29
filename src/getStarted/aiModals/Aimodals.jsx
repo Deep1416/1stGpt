@@ -60,7 +60,7 @@ const Aimodals = () => {
   };
 
   return (
-    <div>
+    <div className=" bg-black">
       <div className="py-10 px-10">
         <div className="mb-7">
           <h1 className="text-[22px] font-semibold text-[#c0bcca] font-heebo">

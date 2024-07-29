@@ -10,7 +10,7 @@ import {
 import { RiFullscreenFill } from "react-icons/ri";
 import { MdOutlineLightMode } from "react-icons/md";
 
-const Topbar = ({ isSidebarOpen }) => {
+const Topbar = ({ isSidebarCollapsed }) => {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
 
   const handlePopupToggle = () => {
@@ -18,11 +18,8 @@ const Topbar = ({ isSidebarOpen }) => {
   };
 
   return (
-    <div
-      className={`text-white h-[100px] px-8 flex items-center justify-between fixed top-0 right-0 z-50 border-b-2 border-red-600 bg-black transition-all duration-300 ${
-        isSidebarOpen ? "left-[300px]" : "left-[90px]"
-      }`}
-    >
+    <>
+
       <div className="">
         <div className="flex gap-5 justify-evenly items-center flex-grow">
           <div className="font-heebo text-black">
@@ -89,7 +86,7 @@ const Topbar = ({ isSidebarOpen }) => {
           </button>
         </div>
       )}
-    </div>
+    </>
   );
 };
 
