@@ -1,5 +1,6 @@
 import React from "react";
 import Slider from "react-slick";
+import { Link, Element } from "react-scroll";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 
@@ -38,7 +39,8 @@ const Testimonial = () => {
   };
 
   return (
-    <div className="pt-[9.4em] dark:bg-black dark:text-white bg-white text-black">
+<Element name="Testimonial">
+<div className="pt-[9.4em] dark:bg-black dark:text-white bg-white text-black">
       <div className="xl:max-w-screen-xl container mx-auto">
         <div className="w-full ">
           <div className="mb-[25px] text-center">
@@ -61,6 +63,7 @@ const Testimonial = () => {
         </div>
       </div>
     </div>
+</Element>
   );
 };
 

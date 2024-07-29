@@ -2,11 +2,11 @@ import React from "react";
 import "./HeroSection.css";
 import Header from "../header/Header";
 import Marque from "./marque/Marque";
-import WrapperContainer from "../wrapperContainer/WrapperContainer";
-
+import { Link, Element } from "react-scroll";
 const HeroSection = () => {
   return (<>
-    <div className="relative  font-jakarta  ">
+   <Element name="Home" >
+   <div className="relative  font-jakarta  ">
       <div
         className="herosection md:min-h-[900px]  min-h-screen object-center "
         style={{ backgroundImage: `url('/herosection.jpg')` }}
@@ -33,6 +33,7 @@ const HeroSection = () => {
         <Marque/>
       </div>
     </div>
+   </Element>
    
   </>
   );

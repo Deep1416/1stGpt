@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { IoIosAdd } from "react-icons/io";
 import { RiSubtractLine } from "react-icons/ri";
 import Faqs from "./../../store/Faq.json";
+import { Link, Element } from "react-scroll";
 
 const Faq = () => {
   const [expandedId, setExpandedId] = useState(null);
@@ -11,7 +12,8 @@ const Faq = () => {
   };
 
   return (
-    <div className="pt-[9.4em] dark:bg-black  dark:text-white bg-white text-white">
+   <Element name="Faq">
+     <div className="pt-[9.4em] dark:bg-black  dark:text-white bg-white text-white">
       <div className=" xl:max-w-screen-xl container mx-auto">
         <div className="text-center">
           <div className="mb-5">
@@ -64,6 +66,7 @@ const Faq = () => {
         </div>
       </div>
     </div>
+   </Element>
   );
 };
 

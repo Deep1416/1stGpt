@@ -54,11 +54,15 @@ const AuthModal = ({ isOpen, onClose }) => {
     }
   };
 
+  const handleGoogleLogin = () => {
+    window.location.href = 'http://localhost:4000/auth/google';
+  };
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="relative bg-white p-8 rounded-lg shadow-lg w-full max-w-md mx-4 sm:mx-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur">
+      <div className="relative bg-white bg-opacity-90 p-8 rounded-lg shadow-lg w-full max-w-md mx-4 sm:mx-auto">
         <button
           className="absolute top-3 right-3 text-gray-600 hover:text-gray-900 text-2xl"
           onClick={onClose}
@@ -66,7 +70,7 @@ const AuthModal = ({ isOpen, onClose }) => {
           &times;
         </button>
         <h2 className="text-2xl font-bold mb-6 text-center">{isRegister ? 'Register' : 'Login'}</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-2">
           {isRegister && (
             <>
               <div>
@@ -185,6 +189,14 @@ const AuthModal = ({ isOpen, onClose }) => {
               </button>
             </p>
           )}
+        </div>
+        <div className="mt-4 text-center">
+          <button
+            onClick={handleGoogleLogin}
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+          >
+            Login with Google
+          </button>
         </div>
       </div>
     </div>

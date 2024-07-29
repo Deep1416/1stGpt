@@ -3,6 +3,7 @@ import blogPost from "./../../store/BlogPost";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
+import { Link, Element } from "react-scroll";
 
 
 const Blog = () => {
@@ -38,7 +39,8 @@ const Blog = () => {
   };
 
   return (
-    <div className="pt-[9.4em] dark:bg-black dark:text-white ">
+   <Element name="Blog">
+     <div className="pt-[9.4em] dark:bg-black dark:text-white ">
       <div className="xl:max-w-screen-xl container mx-auto ">
         <div className="text-center">
           <div className="mb-5">
@@ -85,6 +87,7 @@ const Blog = () => {
         </div>
       </div>
     </div>
+   </Element>
   );
 };
 

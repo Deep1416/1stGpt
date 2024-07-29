@@ -8,7 +8,8 @@ import Top_Header from "./top-header/Top_Header";
 import "./Header.css"; // Import the CSS file
 import DarkLight from "../DarkLight";
 import AuthModal from "../authModel/AuthModel";
-
+import { Link, Element } from "react-scroll";
+import ScrollToTop from "../ScrollToTop/ScrollToTop";
 
 const Header = () => {
   const [isSticky, setIsSticky] = useState(false);
@@ -47,12 +48,31 @@ const Header = () => {
           </h1>
           <nav>
             <ul className="flex items-center gap-8 font-medium leading-[0.32] font-jakarta text-white">
-              <li>Home</li>
-              <li>Service</li>
-              <li>About</li>
-              <li>Testimonial</li>
-              <li>Faq</li>
-              <li>Blog</li>
+              <Link to="Home" spy={true} smooth={true}
+                duration={500}>
+                <li>Home</li>
+              </Link>
+              <Link to="Service" spy={true} smooth={true}
+                duration={500}>
+                <li>Service</li>
+              </Link>{" "}
+              <Link to="About" spy={true} smooth={true}
+                duration={500}>
+                <li>About</li>
+              </Link>{" "}
+              <Link to="Testimonial" spy={true} smooth={true}
+                duration={500}>
+                {" "}
+                <li>Testimonial</li>
+              </Link>
+              <Link to="Faq" spy={true} smooth={true}
+                duration={500}>
+                <li>Faq</li>
+              </Link>{" "}
+              <Link to="Blog" spy={true} smooth={true}
+                duration={500}>
+                <li>Blog</li>
+              </Link>{" "}
             </ul>
           </nav>
           <div className="flex items-center gap-6">
@@ -81,14 +101,15 @@ const Header = () => {
       <header className="lg:hidden container mx-auto p-3 absolute w-full">
         <div className="flex justify-between items-center">
           <div className="w-1/2">
-            <img src={'/logo-1.svg'} alt="Logo" className="w-full h-auto" />
+            <img src={"/logo-1.svg"} alt="Logo" className="w-full h-auto" />
           </div>
           <div className="text-white cursor-pointer text-2xl">
             <GiHamburgerMenu />
           </div>
         </div>
       </header>
-      <DarkLight/>
+      <DarkLight />
+      <ScrollToTop/>
     </>
   );
 };

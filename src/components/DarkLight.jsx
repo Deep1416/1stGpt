@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
+import { IoSunnyOutline } from "react-icons/io5";
+import { IoMoonOutline } from "react-icons/io5";
 
 const DarkLight = () => {
   const [themeMode, setThemeMode] = useState("light");
@@ -17,12 +19,13 @@ const DarkLight = () => {
     document.querySelector("html").classList.add(themeMode);
   }, [themeMode]);
   return (
-    <div className=" fixed bottom-0 right-0 z-50">
+    <div className=" fixed bottom-0 right-5 z-50">
       <p>
         {" "}
         <span>
           <div className="w-full max-w-sm mx-auto flex justify-end mb-4">
             <label className="relative inline-flex items-center cursor-pointer">
+              <IoSunnyOutline className=" absolute left-1"/>
               <input
                 type="checkbox"
                 value=""
@@ -30,10 +33,9 @@ const DarkLight = () => {
                 onChange={onChangeBtn}
                 checked={themeMode === "dark"}
               />
-              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-              <span className="ml-3 text-sm font-medium text-gray-900">
-                Toggle Theme
-              </span>
+              <IoMoonOutline className=" absolute right-1"/>
+              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none  peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-black after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-white"></div>
+             
             </label>
           </div>
         </span>
