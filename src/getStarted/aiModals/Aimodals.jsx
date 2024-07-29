@@ -7,6 +7,7 @@ import { IoVideocamOutline } from "react-icons/io5";
 import { LuPhone } from "react-icons/lu";
 import { BsFileMusic } from "react-icons/bs";
 import { MdOutlineFilterList } from "react-icons/md";
+import aiModals from "./../../store/aiModals";
 
 const heading = [
   {
@@ -148,6 +149,45 @@ const Aimodals = () => {
                 )}
               </div>
             </div>
+          </div>
+        </div>
+        <div className="">
+          <div className="m-0 flex flex-wrap -ml-5">
+            {aiModals.map((item) => {
+              return (
+                <div key={item.id} className="w-[25%] pl-5 mb-5">
+                  <div className="border border-[#312e37] bg-[#17151b] rounded-[5px] min-h-full rounded-tl-[5px] rounded-tr-[5px]">
+                    <div className="-m-[1px] relative mb-0 rounded-tl-[5px] rounded-tr-[5px]">
+                      <img
+                        src={item.img}
+                        alt=""
+                        className=" h-full w-full object-cover  rounded-tl-[5px] rounded-tr-[5px] max-w-full"
+                      />
+                    </div>
+                    <div className="pt-[18px] px-[15px] pb-[14px]">
+                      <h3 className="text-base font-medium font-heebo mb-[5px] text-[#17151b]">
+                        {item.title}
+                      </h3>
+                      <p
+                        className="text-[14px] font-medium font-heebo text-[#7e7a86]"
+                        style={{
+                          overflow: "hidden",
+                          display: "-webkit-box",
+                          WebkitLineClamp: 3,
+                          lineClamp: 3,
+                          WebkitBoxOrient: "vertical",
+                        }}
+                      >
+                        {item.disc}
+                      </p>
+                    </div>
+                    <div className="h-[41px] py-[10px] px-[15px] flex justify-center items-center border border-[#312e37]">
+                      <p className="text-[#7e7a86]">Try Now</p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
