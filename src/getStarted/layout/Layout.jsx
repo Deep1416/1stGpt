@@ -14,7 +14,7 @@ const Layout = () => {
     <div className="flex h-screen">
       {/* SideBar Content */}
       <div
-        className={`transition-all duration-300 ${
+        className={`transition-all duration-300 border border-[#312e37]  ${
           isSidebarCollapsed ? "w-24" : "w-64"
         } bg-[#17151b] h-full`}
       >
@@ -30,7 +30,7 @@ const Layout = () => {
           <TopBar isSidebarCollapsed={isSidebarCollapsed} />
         </div>
         {/* Main content */}
-        <div className="flex-1 overflow-auto bg-gray-200 p-4">
+        <div className="flex-1 overflow-auto bg-gray-200">
           <Outlet />
         </div>
       </div>

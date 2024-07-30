@@ -12,9 +12,7 @@ const App = () => {
     <div>
       <BrowserRouter>
       <Routes>
-        {/* <Route path="/" element={<HomePage />}/> */}
-        {/* <Route path="/" element={<GetStarted />}/> */}
-        {/* <Route path="/" element={<Layout />}/> */}
+        <Route path="/" element={<HomePage />}/>
         <Route path="/get" element={<Layout />}>
           <Route index element={<ChatBot />} />
           <Route path="aimodels" element={<Aimodals />} />
