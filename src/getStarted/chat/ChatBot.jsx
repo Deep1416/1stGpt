@@ -56,7 +56,7 @@ const ChatBot = () => {
 
   return (
     <div className="pt-[38px] flex flex-col z-10 bg-[#1f1f2e] min-h-screen justify-end">
-      <div className=" min-w-[1400px] px-10 my-0 mx-auto text-white ">
+      <div className=" w-full px-10 my-0 mx-auto text-white ">
         <h1 className="mb-[23px] text-[22px] font-semibold text-[#c0bcca] font-heebo">
           Chat Bot Definition
         </h1>

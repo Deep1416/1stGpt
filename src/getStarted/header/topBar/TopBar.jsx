@@ -71,7 +71,7 @@ const Topbar = ({ isSidebarCollapsed }) => {
           <MdOutlineLightMode className=" text-2xl text-[#c0bcca]"/>
         </button>
         <button className="bg-[#2b2830] hover:bg-gray-800 p-3 rounded focus:outline-none  transition-colors">
-          <i className="fas fa-user-circle h-5 w-5"></i>
+          <i className="fas fa-user-circle h-8 w-8"></i>
         </button>
       </div>
 

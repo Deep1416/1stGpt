@@ -3,6 +3,7 @@ import Sidebar from "../header/sideBar/SideBar";
 import TopBar from './../header/topBar/TopBar'
 import { Outlet } from "react-router-dom";
 
+
 const Layout = () => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
@@ -32,6 +33,9 @@ const Layout = () => {
         {/* Main content */}
         <div className="flex-1 overflow-auto bg-gray-200">
           <Outlet />
+        </div>
+        <div>
+       
         </div>
       </div>
     </div>
