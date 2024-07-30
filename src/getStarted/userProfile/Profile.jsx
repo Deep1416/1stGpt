@@ -1,63 +1,144 @@
-import React from 'react';
-
+import React, { useState } from "react";
+import { FiSettings } from "react-icons/fi"; // Importing a settings icon
+import { Link } from "react-router-dom";
 const Profile = () => {
+  const [selectedItems, setSelectedItems] = useState([]);
+
+  const handleItemClick = (item) => {
+    setSelectedItems((prevSelected) =>
+      prevSelected.includes(item)
+        ? prevSelected.filter((selected) => selected !== item)
+        : [...prevSelected, item]
+    );
+  };
+
+  const categories = [
+    "Advertising",
+    "Architecture",
+    "Art",
+    "Education",
+    "Fashion",
+    "Film TV",
+    "Interior",
+    "Marketing",
+    "Graphics",
+    "Games",
+    "Stock Images",
+    "Other",
+  ];
+
   return (
-    <div className="bg-[#1f1f2e] min-h-screen flex flex-col items-center justify-center text-white p-4">
-      <div className="bg-[#2d2d3d] p-6 rounded-lg max-w-md w-full space-y-6">
-        <div className="flex items-center space-x-4">
-          <img
-            src="https://via.placeholder.com/100"
-            alt="Profile"
-            className="w-24 h-24 rounded-lg"
-          />
-          <div>
-            <h2 className="text-xl font-semibold">Caden Smith</h2>
-            <p className="text-sm text-gray-400">@caddeomyth</p>
-            <p className="text-sm">cadensmith@gmail.com</p>
-          </div>
-        </div>
-        <div className="bg-[#1f1f2e] p-4 rounded-lg space-y-2">
-          <h3 className="text-sm text-gray-400">YOUR PLAN</h3>
-          <div className="flex justify-between items-center">
-            <p>Personal Plan - You will be given 8000 tokens every month</p>
-            <button className="bg-[#7966e4] text-white px-4 py-1 rounded-lg">
-              UPGRADE
+    <div className="bg-black min-h-screen text-white">
+      <div className="py-[34px] px-10 border-b border-b-[#312e37]">
+        <h2 className="m-0 p-0 text-[22px] leading-snug font-semibold text-[#c0bcca] font-heebo capitalize">
+          User Profile
+        </h2>
+      </div>
+      <div className="max-w-[780px] w-full px-10 py-0 mx-auto my-0">
+        <div className="py-10">
+          <div className="rounded-[5px] p-[30px] flex items-center mt-[10px] bg-[#17151b] border border-[#312e37] relative mb-[10px]">
+            <button className="absolute top-4 right-4 p-2 bg-[#2b2830] rounded-full text-[#c0bcca] hover:bg-[#312e37] transition-colors">
+              <FiSettings className="text-xl" />
             </button>
+            <div className="w-[200px] max-w-[200px] mr-[30px]">
+              <img
+                src="https://dltimes.in/client-projects/ai/img/user/user.jpg"
+                alt=""
+                className="w-full h-full object-cover rounded-[5px] aspect-square"
+              />
+            </div>
+            <div className="align-baseline">
+              <ul className="m-0 p-0 list-none flex flex-wrap -ml-5">
+                <li className="my-[15px] mx-0 w-1/2 pl-5">
+                  <div className="">
+                    <h4 className="m-0 p-0 font-medium tracking-wider text-[11px] uppercase whitespace-nowrap overflow-hidden text-ellipsis mb-[7px] text-[#7e7a86] font-heebo">
+                      Name
+                    </h4>
+                    <h3 className="m-0 p-0 font-normal text-base text-[#c0bcca] font-heebo">
+                      Caden Smith
+                    </h3>
+                  </div>
+                </li>
+                <li className="my-[15px] mx-0 w-1/2 pl-5">
+                  <div className="">
+                    <h4 className="m-0 p-0 font-medium tracking-wider text-[11px] uppercase whitespace-nowrap overflow-hidden text-ellipsis mb-[7px] text-[#7e7a86] font-heebo">
+                      Username
+                    </h4>
+                    <h3 className="m-0 p-0 font-normal text-base text-[#c0bcca] font-heebo">
+                      @caddeomyth
+                    </h3>
+                  </div>
+                </li>
+                <li className="my-[15px] mx-0 w-1/2 pl-5">
+                  <div className="">
+                    <h4 className="m-0 p-0 font-medium tracking-wider text-[11px] uppercase whitespace-nowrap overflow-hidden text-ellipsis mb-[7px] text-[#7e7a86] font-heebo">
+                      Email Address
+                    </h4>
+                    <h3 className="m-0 p-0 font-normal text-base text-[#c0bcca] font-heebo">
+                      cadensmith@gmail.com{" "}
+                    </h3>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
-        <div className="bg-[#1f1f2e] p-4 rounded-lg space-y-2">
-          <h3 className="text-sm text-gray-400">YOUR WORK</h3>
-          <div className="flex justify-between items-center">
-            <p>Your Creation - You have created 1530 images every month</p>
-            <button className="bg-[#7966e4] text-white px-4 py-1 rounded-lg">
-              VIEW YOUR WORK
-            </button>
-          </div>
-        </div>
-        <div className="space-y-2">
-          <h3 className="text-lg">What are your interests?</h3>
-          <div className="flex flex-wrap gap-2">
-            {[
-              'ADVERTISING',
-              'ARCHITECTURE',
-              'ART',
-              'EDUCATION',
-              'FASHION',
-              'FILM TV',
-              'INTERIOR',
-              'MARKETING',
-              'GRAPHICS',
-              'GAMES',
-              'STOCK IMAGES',
-              'OTHER',
-            ].map((interest) => (
-              <button
-                key={interest}
-                className="bg-[#2d2d3d] text-white px-4 py-1 rounded-lg"
-              >
-                {interest}
+          <div className="rounded-[5px] flex items-center justify-between mb-[38px] gap-[30px] pt-[38px] pb-[33px] border border-[#312e37] bg-[#17151b] px-[30px]">
+            <div className="">
+              <h4 className="m-0 p-0 font-medium tracking-wider text-[11px] uppercase whitespace-nowrap overflow-hidden text-ellipsis mb-[7px] text-[#7e7a86] font-heebo">
+                YOUR PLAN
+              </h4>
+              <p className="font-normal text-base text-[#7e7a86] font-heebo">
+                <span className="text-[#c0bcca]">Personal Plan</span>- You will
+                given 8000 tokens every month
+              </p>
+            </div>
+            <div>
+              <button className=" w-fit max-w-full font-medium text-[14px] tracking-wider font-heebo h-10 leading-10 py-0 px-[34px] uppercase text-center whitespace-nowrap rounded-[20px] overflow-hidden text-ellipsis bg-[#1c1925] text-[#c0bcca] border-2 border-[#8768f8]">
+                Upgrade
               </button>
-            ))}
+            </div>
+          </div>
+          <div className="rounded-[5px] flex items-center justify-between mb-[38px] gap-[30px] pt-[38px] pb-[33px] border border-[#312e37] bg-[#17151b] px-[30px]">
+            <div className="">
+              <h4 className="m-0 p-0 font-medium tracking-wider text-[11px] uppercase whitespace-nowrap overflow-hidden text-ellipsis mb-[7px] text-[#7e7a86] font-heebo">
+                YOUR WORK
+              </h4>
+              <p className="font-normal text-base text-[#7e7a86] font-heebo">
+                <span className="text-[#c0bcca]">Your Creation</span>- You have
+                created 1530 images every month
+              </p>
+            </div>
+            <div>
+              <button className=" w-fit max-w-full font-medium text-[14px] tracking-wider font-heebo h-10 leading-10 py-0 px-[34px] uppercase text-center whitespace-nowrap rounded-[20px] overflow-hidden text-ellipsis bg-[#1c1925] text-[#c0bcca] border-2 border-[#8768f8]">
+                VIEW YOUR WORK
+              </button>
+            </div>
+          </div>
+          <div className="">
+            <h4 className="font-normal text-base mb-[14px] font-heebo text-[#c0bcca]">
+              What are your interests?
+            </h4>
+            <div>
+              <ul className="flex flex-wrap -ml-[10px] list-none">
+                {categories.map((category) => (
+                  <li
+                    key={category}
+                    className="pl-[10px] mb-[10px]"
+                    onClick={() => handleItemClick(category)}
+                  >
+                    <Link
+                      className={`bg-[#2b2830] px-5 rounded-[5px] w-fit max-w-full text-[14px] leading-tight h-10 font-heebo uppercase text-center whitespace-nowrap overflow-hidden text-ellipsis text-[#c0bcca] flex justify-center items-center cursor-pointer ${
+                        selectedItems.includes(category)
+                          ? "border-2 border-[#8768f8]"
+                          : "border border-transparent"
+                      }`}
+                    >
+                      <span>{category}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       </div>
