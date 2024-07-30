@@ -19,11 +19,10 @@ const ChatBot = () => {
 
   const fetchResponse = async (query) => {
     try {
-      const response = await axios.post("YOUR_API_ENDPOINT", {
-        prompt: query,
-        // Add other necessary parameters for your API
+      const response = await axios.post("http://localhost:5000/api/gpt-response", {
+        query: query,
       });
-      const reply = response.data.reply; // Adjust based on your API response format
+      const reply = response.data.Output; // Adjust based on your API response format
       setMessages((prevMessages) => [
         ...prevMessages,
         { type: "bot", text: reply },
@@ -55,51 +54,53 @@ const ChatBot = () => {
   }, [messages]);
 
   return (
-    <div className="pt-[38px] flex flex-col z-10 bg-[#1f1f2e] min-h-screen justify-end">
-      <div className=" min-w-[1400px] px-10 my-0 mx-auto text-white ">
-        <h1 className="mb-[23px] text-[22px] font-semibold text-[#c0bcca] font-heebo">
+    <div className="pt-[38px] flex flex-col z-10 bg-[#0f0e11] min-h-screen justify-end">
+      <div className="w-full px-10 my-0 mx-auto text-white">
+        <h1 className=" text-[22px] font-semibold text-[#c0bcca] font-heebo">
           Chat Bot Definition
         </h1>
-        <div className="w-full max-w-[1400px] px-10 mx-auto space-y-4 overflow-y-auto mb-20">
+        <div className="w-full mt-[20px]  mx-auto space-y-5 overflow-y-auto mb-20 ">
           {messages.map((msg, index) => (
             <div
               key={index}
-              className={`bg-[#2d2d3d] p-4 rounded-lg ${
-                msg.type === "user" ? "self-end" : "self-start"
-              }`}
+              className={` ${
+                msg.type === "user"
+                  ? "bg-[#2b2830] text-[#c0bcca]"
+                  : "bg-[#17151b] text-[#7e7a86] border-[#312e37] border"
+              } px-4 py-8 rounded-lg relative `}
             >
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 ">
                 <span
                   className={`${
                     msg.type === "user"
-                      ? "bg-[#7966e4] text-[#1f1f2e]"
-                      : "bg-[#464657] text-[#2d2d3d]"
-                  } px-3 py-1 rounded-full font-bold`}
+                      ? "bg-[#7C5FE3] text-[#1f1f2e]"
+                      : "bg-[#2B2830] text-[#7E7A68]"
+                  } px-3 py-0.5 rounded-full font-bold text-[12px] absolute -top-3`}
                 >
                   {msg.type === "user" ? "YOU" : "BOT"}
                 </span>
-                <span className="text-lg font-medium">{msg.text}</span>
+                <span className="">{msg.text}</span>
               </div>
             </div>
           ))}
           <div ref={messagesEndRef} />
         </div>
-        <div className=" px-10 rounded-lg flex items-center fixed bottom-0 w-full max-w-[1400px] mx-auto left-0 right-0">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder="Send a message..."
-            className="bg-[#1f1f2e] text-white px-4 py-2 w-full rounded-l-lg outline-none"
-          />
-          <button
-            onClick={handleSend}
-            className="bg-[#7966e4] text-white px-4 py-2 rounded-r-lg"
-          >
-            Send
-          </button>
-        </div>
+      </div>
+      <div className=" px-10 rounded-sm  flex items-center absolute bottom-0">
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyPress={handleKeyPress}
+          placeholder="Send a message..."
+          className="bg-[#1f1f2e] text-white px-4 py-2 w-full rounded-l-lg outline-none"
+        />
+        <button
+          onClick={handleSend}
+          className="bg-[#7966e4] text-white px-4 py-2 "
+        >
+          Send
+        </button>
       </div>
     </div>
   );

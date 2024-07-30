@@ -51,27 +51,27 @@ const Topbar = ({ isSidebarCollapsed }) => {
         </div>
       </div>
 
-      <div className="flex items-center space-x-4 flex-wrap gap-2 flex-shrink-0">
-        <button className="bg-blue-600 hover:bg-blue-700 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-300 transition-colors">
-          <IoShareSocialOutline />
+      <div className="flex items-center space-x-3 flex-wrap gap-1 flex-shrink-0">
+        <button className="bg-[#2b2830] hover:bg-gray-800 p-3 rounded-full focus:outline-none  transition-colors">
+          <IoShareSocialOutline className=" text-2xl text-[#c0bcca]" />
         </button>
-        <button className="bg-blue-600 hover:bg-blue-700 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-300 transition-colors">
-          <IoSearchOutline />
+        <button className="bg-[#2b2830] hover:bg-gray-800 p-3 rounded-full focus:outline-none  transition-colors">
+          <IoSearchOutline className=" text-2xl text-[#c0bcca]"/>
         </button>
-        <button className="bg-blue-600 hover:bg-blue-700 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-300 transition-colors">
-          <IoNotificationsOutline />
+        <button className="bg-[#2b2830] hover:bg-gray-800 p-3 rounded-full focus:outline-none  transition-colors">
+          <IoNotificationsOutline className=" text-2xl text-[#c0bcca]"/>
         </button>
-        <button className="bg-blue-600 hover:bg-blue-700 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-300 transition-colors">
-          <RiFullscreenFill />
+        <button className="bg-[#2b2830] hover:bg-gray-800 p-3 rounded-full focus:outline-none  transition-colors">
+          <RiFullscreenFill className=" text-2xl text-[#c0bcca]"/>
         </button>
-        <button className="bg-blue-600 hover:bg-blue-700 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-300 transition-colors">
-          <IoLanguage />
+        <button className="bg-[#2b2830] hover:bg-gray-800 p-3 rounded-full focus:outline-none  transition-colors">
+          <IoLanguage className=" text-2xl text-[#c0bcca]" />
         </button>
-        <button className="bg-blue-600 hover:bg-blue-700 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-300 transition-colors">
-          <MdOutlineLightMode />
+        <button className="bg-[#2b2830] hover:bg-gray-800 p-3 rounded-full focus:outline-none  transition-colors">
+          <MdOutlineLightMode className=" text-2xl text-[#c0bcca]"/>
         </button>
-        <button className="bg-blue-600 hover:bg-blue-700 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-300 transition-colors">
-          <i className="fas fa-user-circle h-5 w-5"></i>
+        <button className="bg-[#2b2830] hover:bg-gray-800 p-3 rounded focus:outline-none  transition-colors">
+          <i className="fas fa-user-circle h-8 w-8"></i>
         </button>
       </div>
 
