@@ -59,10 +59,10 @@ const Topbar = ({ isSidebarCollapsed }) => {
           </span>
         </div>
         {isPopupVisible && (
-          <div className="absolute right-0 top-12 mt-2 p-6 bg-white text-black rounded-lg shadow-lg z-50">
+          <div className="absolute right-0 top-12 mt-2 p-6 bg-[#17151b] text-[#7e7a86] rounded-lg shadow-lg z-50">
             <p>This is the popup content!</p>
             <button
-              className="mt-3 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+              className="mt-3 bg-gray-400 hover:bg-gary-700 text-white px-4 py-2 rounded"
               onClick={handlePopupToggle}
             >
               Close Popup
@@ -91,15 +91,15 @@ const Topbar = ({ isSidebarCollapsed }) => {
           <MdOutlineLightMode className="text-2xl text-[#c0bcca]" />
         </button>
         <button
-          className="bg-[#2b2830] hover:bg-gray-800 p-3 rounded-full focus:outline-none transition-colors relative"
+          className="bg-[#2b2830] hover:bg-gray-800 p-3 rounded-lg focus:outline-none transition-colors relative"
           onClick={handleProfilePopupToggle}
         >
-          <i className="fas fa-user-circle h-8 w-8"></i>
+          <img src="/avatr.png" alt="" className="h-10 w-10" />
           {isProfilePopupVisible && (
-            <div className="absolute right-0 top-12 mt-2 w-56 bg-white text-black rounded-lg shadow-lg z-50 p-4">
+            <div className="absolute right-0 top-12 mt-2 w-56 bg-[#17151b] text-[#7e7a86] rounded-lg shadow-lg z-50 p-4">
               <div className="flex items-center mb-4">
                 <img
-                  src="path_to_profile_image" // Replace with the actual path to profile image
+                  src="/avatr.png" // Replace with the actual path to profile image
                   alt="Profile"
                   className="w-10 h-10 rounded-full"
                 />

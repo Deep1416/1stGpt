@@ -42,7 +42,7 @@ const Profile = () => {
             </button>
             <div className="w-[200px] max-w-[200px] mr-[30px]">
               <img
-                src="https://dltimes.in/client-projects/ai/img/user/user.jpg"
+                src="/avatr.png"
                 alt=""
                 className="w-full h-full object-cover rounded-[5px] aspect-square"
               />

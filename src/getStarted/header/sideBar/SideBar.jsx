@@ -69,7 +69,7 @@ const Sidebar = ({ isSidebarCollapsed, toggleSidebar }) => {
         <Link to={'/'}>
         <li className="flex items-center gap-2 py-1 px-2 rounded hover:bg-[#2b2830] w-fit">
             <GoHome className="text-xl" />
-            {!isSidebarCollapsed && <span className="font-semibold inline-block w-24">Clear Conversations</span>}
+            {!isSidebarCollapsed && <span className="font-semibold inline-block text-[12px] w-28">Clear Conversations</span>}
           </li>
         </Link>
           <Link to={'aimodels'}>
