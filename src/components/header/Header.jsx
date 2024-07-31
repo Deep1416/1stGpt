@@ -8,12 +8,16 @@ import Top_Header from "./top-header/Top_Header";
 import "./Header.css"; // Import the CSS file
 import DarkLight from "../DarkLight";
 import AuthModal from "../authModel/AuthModel";
-import { Link, Element } from "react-scroll";
+import { Link } from "react-scroll";
 import ScrollToTop from "../ScrollToTop/ScrollToTop";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [isSticky, setIsSticky] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
+
+  const navigate = useNavigate();
+  const isUserLoggedIn = localStorage.getItem("token") || null;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,6 +33,14 @@ const Header = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  const handleGetStartedClick = () => {
+    if (isUserLoggedIn) {
+      navigate("/get");
+    } else {
+      setModalOpen(true);
+    }
+  };
 
   return (
     <>
@@ -48,31 +60,24 @@ const Header = () => {
           </h1>
           <nav>
             <ul className="flex items-center gap-8 font-medium leading-[0.32] font-jakarta text-white">
-              <Link to="Home" spy={true} smooth={true}
-                duration={500}>
+              <Link to="Home" spy={true} smooth={true} duration={500}>
                 <li>Home</li>
               </Link>
-              <Link to="Service" spy={true} smooth={true}
-                duration={500}>
+              <Link to="Service" spy={true} smooth={true} duration={500}>
                 <li>Service</li>
-              </Link>{" "}
-              <Link to="About" spy={true} smooth={true}
-                duration={500}>
+              </Link>
+              <Link to="About" spy={true} smooth={true} duration={500}>
                 <li>About</li>
-              </Link>{" "}
-              <Link to="Testimonial" spy={true} smooth={true}
-                duration={500}>
-                {" "}
+              </Link>
+              <Link to="Testimonial" spy={true} smooth={true} duration={500}>
                 <li>Testimonial</li>
               </Link>
-              <Link to="Faq" spy={true} smooth={true}
-                duration={500}>
+              <Link to="Faq" spy={true} smooth={true} duration={500}>
                 <li>Faq</li>
-              </Link>{" "}
-              <Link to="Blog" spy={true} smooth={true}
-                duration={500}>
+              </Link>
+              <Link to="Blog" spy={true} smooth={true} duration={500}>
                 <li>Blog</li>
-              </Link>{" "}
+              </Link>
             </ul>
           </nav>
           <div className="flex items-center gap-6">
@@ -90,7 +95,7 @@ const Header = () => {
               style={{
                 background: "linear-gradient(90deg, #16C9BC 0%, #078CE8 100%)",
               }}
-              onClick={() => setModalOpen(true)}
+              onClick={handleGetStartedClick}
             >
               Get Started
             </button>
@@ -109,7 +114,7 @@ const Header = () => {
         </div>
       </header>
       <DarkLight />
-      <ScrollToTop/>
+      <ScrollToTop />
     </>
   );
 };

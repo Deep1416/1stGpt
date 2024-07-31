@@ -9,11 +9,17 @@ import {
 } from "react-icons/io5";
 import { RiFullscreenFill } from "react-icons/ri";
 import { MdOutlineLightMode } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Topbar = ({ isSidebarCollapsed }) => {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [isProfilePopupVisible, setIsProfilePopupVisible] = useState(false);
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/");
+  };
 
   const handlePopupToggle = () => {
     setIsPopupVisible(!isPopupVisible);
@@ -113,11 +119,11 @@ const Topbar = ({ isSidebarCollapsed }) => {
                 Profile
               </button>
              </Link>
-             <Link to={'/'}>
-             <button className="w-full text-left py-2 px-4 hover:bg-gray-100 rounded">
+           
+             <button onClick={handleLogout} className="w-full text-left py-2 px-4 hover:bg-gray-100 rounded">
                 Log Out
               </button>
-             </Link>
+            
             </div>
           )}
         </button>
