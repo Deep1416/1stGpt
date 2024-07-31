@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import { FiUpload, FiSend } from "react-icons/fi";
 
 const ChatBot = () => {
   const [messages, setMessages] = useState([
@@ -15,14 +16,26 @@ const ChatBot = () => {
     },
   ]);
   const [input, setInput] = useState("");
+  const [searchMethod, setSearchMethod] = useState("gemini"); // Default search method
   const messagesEndRef = useRef(null);
 
   const fetchResponse = async (query) => {
+    const token = localStorage.getItem("token"); // Retrieve token from localStorage
     try {
-      const response = await axios.post("http://localhost:5000/api/gpt-response", {
-        query: query,
-      });
-      const reply = response.data.Output; // Adjust based on your API response format
+      const response = await axios.post(
+        `http://localhost:4000/v1/ai/${searchMethod}`,
+        {
+          query: query,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include token in headers
+          },
+        }
+      );
+      console.log(response);
+      const reply = response?.data?.data?.Output;
+      // console.log(reply ,"form api respoinse"); // Adjust based on your API response format
       setMessages((prevMessages) => [
         ...prevMessages,
         { type: "bot", text: reply },
@@ -54,55 +67,68 @@ const ChatBot = () => {
   }, [messages]);
 
   return (
-    <div className="pt-[38px] flex flex-col z-10 bg-[#0f0e11] min-h-screen justify-end">
-      <div className="w-full px-10 my-0 mx-auto text-white">
-        <h1 className=" text-[22px] font-semibold text-[#c0bcca] font-heebo">
-          Chat Bot Definition
-        </h1>
-        <div className="w-full mt-[20px]  mx-auto space-y-5 overflow-y-auto mb-20 ">
-          {messages.map((msg, index) => (
-            <div
-              key={index}
-              className={` ${
-                msg.type === "user"
-                  ? "bg-[#2b2830] text-[#c0bcca]"
-                  : "bg-[#17151b] text-[#7e7a86] border-[#312e37] border"
-              } px-4 py-8 rounded-lg relative `}
-            >
-              <div className="flex items-center space-x-2 ">
-                <span
-                  className={`${
-                    msg.type === "user"
-                      ? "bg-[#7C5FE3] text-[#1f1f2e]"
-                      : "bg-[#2B2830] text-[#7E7A68]"
-                  } px-3 py-0.5 rounded-full font-bold text-[12px] absolute -top-3`}
-                >
-                  {msg.type === "user" ? "YOU" : "BOT"}
-                </span>
-                <span className="">{msg.text}</span>
+    <>
+      <div className="flex flex-col z-10 bg-[#0f0e11] min-h-screen justify-end relative">
+        <div className="w-full px-10 my-0 mx-auto text-white">
+          <h1 className="text-[22px] font-semibold text-[#c0bcca] font-heebo">
+            Chat Bot Definition
+          </h1>
+          <div className="w-full mt-[20px] mx-auto space-y-5 overflow-y-auto mb-20">
+            {messages.map((msg, index) => (
+              <div
+                key={index}
+                className={`${
+                  msg.type === "user"
+                    ? "bg-[#2b2830] text-[#c0bcca]"
+                    : "bg-[#17151b] text-[#7e7a86] border-[#312e37] border"
+                } px-4 py-8 rounded-lg relative mt-3`}
+              >
+                <div className="flex items-center space-x-2 ">
+                  <span
+                    className={`${
+                      msg.type === "user"
+                        ? "bg-[#7C5FE3] text-[#1f1f2e]"
+                        : "bg-[#2B2830] text-[#7E7A68]"
+                    } px-3 py-0.5 rounded-full font-bold text-[12px] absolute -top-3`}
+                  >
+                    {msg.type === "user" ? "YOU" : "BOT"}
+                  </span>
+                  <span>{msg.text}</span>
+                </div>
               </div>
-            </div>
-          ))}
-          <div ref={messagesEndRef} />
+            ))}
+            <div ref={messagesEndRef} />
+          </div>
         </div>
       </div>
-      <div className=" px-10 rounded-sm  flex items-center absolute bottom-0">
+      <div className="px-10 rounded-sm sticky z-50 bottom-0 bg-[#0f0e11] flex gap-1 mx-auto p-5">
+        <select
+          value={searchMethod}
+          onChange={(e) => setSearchMethod(e.target.value)}
+          className="bg-[#1f1f2e] text-white px-4 py-2 rounded outline-none"
+        >
+          <option value="gemini">Gemini</option>
+          <option value="gpt">OpenAI</option>
+        </select>
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyPress={handleKeyPress}
           placeholder="Send a message..."
-          className="bg-[#1f1f2e] text-white px-4 py-2 w-full rounded-l-lg outline-none"
+          className="bg-[#1f1f2e] text-white px-4 py-2 w-full rounded outline-none"
         />
+        <button className="bg-[#1f1f2e] text-white px-4 py-2 rounded-r-none">
+          <FiUpload size={20} />
+        </button>
         <button
           onClick={handleSend}
-          className="bg-[#7966e4] text-white px-4 py-2 "
+          className="bg-[#1f1f2e] text-white px-4 py-2 rounded-r-lg"
         >
-          Send
+          <FiSend size={20} />
         </button>
       </div>
-    </div>
+    </>
   );
 };
 

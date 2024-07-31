@@ -5,3 +5,13 @@
 body{
     overflow-x: hidden;
 }
+
+/* custom.css */
+/* custom.css */
+.gradient-border {
+    border-width: 2px !important;
+    border-image-slice: 1 !important;
+    border-image-source: linear-gradient(270deg, #8768f8, #b7a4fb, #8768f8, #b7a4fb) !important;
+    border-radius: 9999px !important; /* Equivalent to Tailwind's rounded-full */
+  }
+  

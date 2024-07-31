@@ -5,6 +5,7 @@ import Pricing from './getStarted/pricing/Pricing';
 import Layout from './getStarted/layout/Layout';
 import Aimodals from './getStarted/aiModals/Aimodals'
 import ChatBot from './getStarted/chat/ChatBot'
+import Profile from './getStarted/userProfile/Profile'
 
 const App = () => {
   return (
@@ -15,7 +16,7 @@ const App = () => {
         <Route path="/get" element={<Layout />}>
           <Route index element={<ChatBot />} />
           <Route path="aimodels" element={<Aimodals />} />
-          <Route path="profile" element={<Aimodals />} />
+          <Route path="profile" element={<Profile />} />
           <Route path="pricing" element={<Pricing />} />
         </Route>
       </Routes>

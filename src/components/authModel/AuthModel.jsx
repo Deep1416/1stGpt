@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 
 const AuthModal = ({ isOpen, onClose }) => {
   const [isRegister, setIsRegister] = useState(true);
@@ -11,6 +13,11 @@ const AuthModal = ({ isOpen, onClose }) => {
     username: '',
   });
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
+
+
 
   const validate = () => {
     const newErrors = {};
@@ -40,10 +47,24 @@ const AuthModal = ({ isOpen, onClose }) => {
     }
 
     setErrors({});
+    setLoading(true);
     const url = isRegister ? 'http://localhost:4000/v1/user/register' : 'http://localhost:4000/v1/user/login';
     try {
       const response = await axios.post(url, formData);
-      console.log(response);
+      // console.log(response,response?.data?.data?.accessToken);
+
+      if (!isRegister && response?.data) {
+        localStorage.setItem('token', response?.data?.data?.accessToken);
+        setTimeout(() => {
+          navigate('/get')
+        }, 300);
+
+      }
+     
+
+      if (isRegister) {
+        setIsRegister(false);
+      }
       // Handle successful registration or login
     } catch (error) {
       console.error(error);
@@ -51,6 +72,8 @@ const AuthModal = ({ isOpen, onClose }) => {
       if (error.response && error.response.data) {
         setErrors({ general: error.response.data.message });
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -154,13 +177,19 @@ const AuthModal = ({ isOpen, onClose }) => {
             <button
               type="submit"
               className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              disabled={loading}
             >
-              {isRegister ? 'Register' : 'Login'}
+              {loading ? (
+                <span>Loading...</span>
+              ) : (
+                <span>{isRegister ? 'Register' : 'Login'}</span>
+              )}
             </button>
             <button
               type="button"
               onClick={onClose}
               className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+              disabled={loading}
             >
               Cancel
             </button>
@@ -174,6 +203,7 @@ const AuthModal = ({ isOpen, onClose }) => {
               <button
                 className="text-indigo-600 hover:text-indigo-900"
                 onClick={() => setIsRegister(false)}
+                disabled={loading}
               >
                 Click here to login
               </button>
@@ -184,6 +214,7 @@ const AuthModal = ({ isOpen, onClose }) => {
               <button
                 className="text-indigo-600 hover:text-indigo-900"
                 onClick={() => setIsRegister(true)}
+                disabled={loading}
               >
                 Click here to register
               </button>
@@ -194,6 +225,7 @@ const AuthModal = ({ isOpen, onClose }) => {
           <button
             onClick={handleGoogleLogin}
             className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+            disabled={loading}
           >
             Login with Google
           </button>
