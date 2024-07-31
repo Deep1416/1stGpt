@@ -86,7 +86,7 @@ const Sidebar = ({ isSidebarCollapsed, toggleSidebar }) => {
             <li className="flex items-center gap-2 py-1 px-2 rounded hover:bg-[#2b2830] w-fit">
               <GoHome className="text-xl" />
               {!isSidebarCollapsed && (
-                <span className="font-semibold inline-block w-24">
+                <span className="font-semibold inline-block  ">
                   Clear Conversations
                 </span>
               )}
