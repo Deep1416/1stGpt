@@ -392,7 +392,7 @@ const Pricing = () => {
               </div>
             </div>
           </div>
-          <div className="border border-[#312e37]">
+          <div className="border border-[#312e37] bg-[#17151b]">
             <div className="-ml-[1px] flex items-center">
               <div className="w-[31%] max-w-[31%] px-10 py-[30px] border-l border-l-[#312e37]"></div>
               <div className="text-center w-[23%] max-w-[23%] px-10 py-[30px] border-l border-l-[#312e37]">
