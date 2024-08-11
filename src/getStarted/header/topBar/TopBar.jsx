@@ -14,7 +14,7 @@ import { Link, useNavigate } from "react-router-dom";
 const Topbar = ({ isSidebarCollapsed }) => {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [isProfilePopupVisible, setIsProfilePopupVisible] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.clear();
@@ -43,11 +43,11 @@ const Topbar = ({ isSidebarCollapsed }) => {
             </div>
           </div>
           <div className="font-heebo">
-           <Link to={'/get/pricing'}>
-           <button className="w-fit max-w-full font-medium text-[14px] tracking-wider h-10 px-[34px] uppercase text-center whitespace-nowrap outline-none outline-transparent font-heebo border-2 text-[#c0bcca] border-[#8768f8] rounded-full ">
-              Upgrade
-            </button>
-           </Link>
+            <Link to={"/get/pricing"}>
+              <button className="w-fit max-w-full font-medium text-[14px] tracking-wider h-10 px-[34px] uppercase text-center whitespace-nowrap outline-none outline-transparent font-heebo border-2 text-[#c0bcca] border-[#8768f8] rounded-full ">
+                Upgrade
+              </button>
+            </Link>
           </div>
         </div>
       </div>
@@ -65,14 +65,41 @@ const Topbar = ({ isSidebarCollapsed }) => {
           </span>
         </div>
         {isPopupVisible && (
-          <div className="absolute right-0 top-12 mt-2 p-6 bg-[#17151b] text-[#7e7a86] rounded-lg shadow-lg z-50">
-            <p>This is the popup content!</p>
-            <button
-              className="mt-3 bg-gray-400 hover:bg-gary-700 text-white px-4 py-2 rounded"
-              onClick={handlePopupToggle}
-            >
-              Close Popup
-            </button>
+          <div className="absolute left-0 right-0 top-12 mt-2 mx-auto bg-[#17151b] text-[#6c757d] rounded-lg shadow-lg z-50 w-[500px]">
+            <section className="flex flex-col gap-2 p-4">
+              <div className="flex justify-between items-center">
+                <div className="text-xl font-semibold">Favorite Models</div>
+                <div>11 models</div>
+              </div>
+              <hr />
+              <article className="p-2">
+                <h2 className="text-xl font-bold">Gpt-4 omi</h2>
+                <p>
+                  <span>10</span> credits/message
+                </p>
+              </article>
+              <hr />
+              <article className="p-2">
+                <h2>Groq Llama3 70B</h2>
+                <p>
+                  <span>10</span> credits/message
+                </p>
+              </article>
+              <hr />
+              <article className="p-2">
+                <h2>Google Gemini</h2>
+                <p>
+                  <span>10</span> credits/message
+                </p>
+              </article>
+              <hr />
+              <article className="p-2">
+                <h2>Gpt 3.5</h2>
+                <p>
+                  <span>10</span> credits/message
+                </p>
+              </article>
+            </section>
           </div>
         )}
       </div>
@@ -114,16 +141,18 @@ const Topbar = ({ isSidebarCollapsed }) => {
                   <p className="text-sm text-gray-600">cadmail@gmail.com</p>
                 </div>
               </div>
-             <Link to={'/get/profile'}>
-             <button className="w-full text-left py-2 px-4 hover:bg-gray-100 rounded">
-                Profile
-              </button>
-             </Link>
-           
-             <button onClick={handleLogout} className="w-full text-left py-2 px-4 hover:bg-gray-100 rounded">
+              <Link to={"/get/profile"}>
+                <button className="w-full text-left py-2 px-4 hover:bg-gray-100 rounded">
+                  Profile
+                </button>
+              </Link>
+
+              <button
+                onClick={handleLogout}
+                className="w-full text-left py-2 px-4 hover:bg-gray-100 rounded"
+              >
                 Log Out
               </button>
-            
             </div>
           )}
         </button>
