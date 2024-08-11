@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import { FaCaretDown } from "react-icons/fa";
+import { FaCaretDown, FaCaretUp } from "react-icons/fa";
 import {
   IoShareSocialOutline,
   IoSearchOutline,
@@ -71,12 +71,16 @@ const Topbar = ({ isSidebarCollapsed, totalCoins }) => {
         <div>
           <span className="uppercase text-[#6c757d] font-semibold flex cursor-pointer items-center gap-2 px-2 py-1 border-white border rounded-r-md">
             <span>Liberty</span>
-            <FaCaretDown className="text-[15px]" />
+            {isPopupVisible ? (
+              <FaCaretUp className="text-[15px]" />
+            ) : (
+              <FaCaretDown className="text-[15px]" />
+            )}
           </span>
         </div>
         {isPopupVisible && (
-          <div className="absolute left-0 right-0 top-12 mt-2 mx-auto bg-[#17151b] text-[#6c757d] rounded-lg shadow-lg z-50 w-[500px]">
-            <section className="flex flex-col gap-2 p-4">
+          <div className="absolute top-[60px] -right-48 mt-2 mx-auto bg-[#2B2830] text-[#b8b5ac] rounded-lg shadow-lg z-50 w-[700px]">
+            <section className="flex flex-col gap-2 p-4 ">
               <div className="flex justify-between items-center">
                 <div className="text-xl font-semibold">Favorite Models</div>
                 <div>11 models</div>
@@ -113,29 +117,6 @@ const Topbar = ({ isSidebarCollapsed, totalCoins }) => {
           </div>
         )}
       </div>
-
-      {isPopupVisible && (
-        <div className="absolute  top-16 mx-auto  mt-2 p-6 bg-[#444654] text-[#7e7a86]  shadow-lg z-50  min-w-[800px]">
-          <div className=" flex justify-between px-2">
-            <p>Favorite Models</p>
-            <p>10 models</p>
-          </div>
-
-          <div>
-            <input
-              type="text"
-              className=" p-1 border-white rounded"
-              placeholder=" Search Any Model"
-            />
-          </div>
-          <button
-            className="mt-3 bg-gray-400 hover:bg-gary-700 text-white px-4 py-2 rounded"
-            onClick={handlePopupToggle}
-          >
-            Close Popup
-          </button>
-        </div>
-      )}
 
       <div className="flex items-center space-x-3 flex-wrap gap-1 flex-shrink-0">
         <button
