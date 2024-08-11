@@ -15,7 +15,7 @@ import { IoCubeOutline } from "react-icons/io5";
 import { MdAdd } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 
-const Sidebar = ({ isSidebarCollapsed, toggleSidebar }) => {
+const Sidebar = ({ isSidebarCollapsed, toggleSidebar,totalCoins,setTotalCoins }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -100,7 +100,7 @@ const Sidebar = ({ isSidebarCollapsed, toggleSidebar }) => {
           </Link>
           <li className="flex items-center gap-2 py-1 px-2 rounded hover:bg-[#2b2830] w-fit">
             <FaUser className="text-xl" />
-            {!isSidebarCollapsed && <span>0 Credits</span>}
+            {!isSidebarCollapsed && <span> {totalCoins} Credits</span>}
           </li>
           <li className="flex items-center gap-2 py-1 px-2 rounded hover:bg-[#2b2830] w-fit">
             <IoCubeOutline className="text-xl" />

@@ -1,8 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FiSettings } from "react-icons/fi"; // Importing a settings icon
 import { Link } from "react-router-dom";
+
 const Profile = () => {
   const [selectedItems, setSelectedItems] = useState([]);
+  const [userInfo, setUserInfo] = useState(null);
+
+  useEffect(() => {
+    const storedUserInfo = localStorage.getItem("userInfo");
+    if (storedUserInfo) {
+      setUserInfo(JSON.parse(storedUserInfo));
+    }
+  }, []);
 
   const handleItemClick = (item) => {
     setSelectedItems((prevSelected) =>
@@ -55,7 +64,7 @@ const Profile = () => {
                       Name
                     </h4>
                     <h3 className="m-0 p-0 font-normal text-base text-[#c0bcca] font-heebo">
-                      Caden Smith
+                      {userInfo?.firstname+" " +userInfo?.lastname ?? "N/A"}
                     </h3>
                   </div>
                 </li>
@@ -65,7 +74,7 @@ const Profile = () => {
                       Username
                     </h4>
                     <h3 className="m-0 p-0 font-normal text-base text-[#c0bcca] font-heebo">
-                      @caddeomyth
+                      {userInfo?.username ?? "N/A"}
                     </h3>
                   </div>
                 </li>
@@ -75,7 +84,7 @@ const Profile = () => {
                       Email Address
                     </h4>
                     <h3 className="m-0 p-0 font-normal text-base text-[#c0bcca] font-heebo">
-                      cadensmith@gmail.com{" "}
+                      {userInfo?.email ?? "N/A"}
                     </h3>
                   </div>
                 </li>
@@ -89,11 +98,11 @@ const Profile = () => {
               </h4>
               <p className="font-normal text-base text-[#7e7a86] font-heebo">
                 <span className="text-[#c0bcca]">Personal Plan</span>- You will
-                given 8000 tokens every month
+                be given 8000 tokens every month
               </p>
             </div>
             <div>
-              <button className=" w-fit max-w-full font-medium text-[14px] tracking-wider font-heebo h-10 leading-10 py-0 px-[34px] uppercase text-center whitespace-nowrap rounded-[20px] overflow-hidden text-ellipsis bg-[#1c1925] text-[#c0bcca] border-2 border-[#8768f8]">
+              <button className="w-fit max-w-full font-medium text-[14px] tracking-wider font-heebo h-10 leading-10 py-0 px-[34px] uppercase text-center whitespace-nowrap rounded-[20px] overflow-hidden text-ellipsis bg-[#1c1925] text-[#c0bcca] border-2 border-[#8768f8]">
                 Upgrade
               </button>
             </div>
@@ -109,7 +118,7 @@ const Profile = () => {
               </p>
             </div>
             <div>
-              <button className=" w-fit max-w-full font-medium text-[14px] tracking-wider font-heebo h-10 leading-10 py-0 px-[34px] uppercase text-center whitespace-nowrap rounded-[20px] overflow-hidden text-ellipsis bg-[#1c1925] text-[#c0bcca] border-2 border-[#8768f8]">
+              <button className="w-fit max-w-full font-medium text-[14px] tracking-wider font-heebo h-10 leading-10 py-0 px-[34px] uppercase text-center whitespace-nowrap rounded-[20px] overflow-hidden text-ellipsis bg-[#1c1925] text-[#c0bcca] border-2 border-[#8768f8]">
                 VIEW YOUR WORK
               </button>
             </div>
