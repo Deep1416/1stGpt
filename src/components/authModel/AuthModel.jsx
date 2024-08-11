@@ -55,6 +55,7 @@ const AuthModal = ({ isOpen, onClose }) => {
 
       if (!isRegister && response?.data) {
         localStorage.setItem('token', response?.data?.data?.accessToken);
+        localStorage.setItem('userInfo', JSON.stringify(response?.data?.data?.user));
         setTimeout(() => {
           navigate('/get')
         }, 300);

@@ -19,23 +19,26 @@ const ChatBot = () => {
   const [searchMethod, setSearchMethod] = useState("gemini"); // Default search method
   const messagesEndRef = useRef(null);
 
-  const fetchResponse = async (query) => {
+  const fetchResponse = async (query, file) => {
     const token = localStorage.getItem("token"); // Retrieve token from localStorage
+    const formData = new FormData();
+    formData.append("query", query);
+    if (file) {
+      formData.append("file", file);
+    }
     try {
       const response = await axios.post(
         `http://localhost:4000/v1/ai/${searchMethod}`,
-        {
-          query: query,
-        },
+        formData,
         {
           headers: {
             Authorization: `Bearer ${token}`, // Include token in headers
+            "Content-Type": "multipart/form-data", // Required for file uploads
           },
         }
       );
       console.log(response);
       const reply = response?.data?.data?.Output;
-      // console.log(reply ,"form api respoinse"); // Adjust based on your API response format
       setMessages((prevMessages) => [
         ...prevMessages,
         { type: "bot", text: reply },
