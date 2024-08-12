@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { FiUpload, FiSend } from "react-icons/fi";
+import { FiSend } from "react-icons/fi";
+import { useSelector } from "react-redux";
 
 const ChatBot = () => {
   const [messages, setMessages] = useState([
@@ -15,9 +16,13 @@ const ChatBot = () => {
       text: "Chatbots boost operational efficiency and bring cost savings to businesses while offering convenience and added services to internal employees and external customers. They allow companies to easily resolve many types of customer queries and issues while reducing the need for human interaction.",
     },
   ]);
+
   const [input, setInput] = useState("");
   const [searchMethod, setSearchMethod] = useState("gemini"); // Default search method
   const messagesEndRef = useRef(null);
+
+  // Get selected model from Redux
+  const selectedModel = useSelector((state) => state?.model?.selectedModel);
 
   const fetchResponse = async (query, file) => {
     const token = localStorage.getItem("token"); // Retrieve token from localStorage
@@ -37,7 +42,6 @@ const ChatBot = () => {
           },
         }
       );
-      console.log(response);
       const reply = response?.data?.data?.Output;
       setMessages((prevMessages) => [
         ...prevMessages,
@@ -121,8 +125,8 @@ const ChatBot = () => {
           placeholder="Send a message..."
           className="bg-[#1f1f2e] text-white px-4 py-2 w-full rounded outline-none"
         />
-        <button className="bg-[#1f1f2e] text-white px-4 py-2 rounded-r-none">
-          <FiUpload size={20} />
+        <button className="bg-[#1f1f2e] text-white px-4 py-1 rounded-r-none">
+          {selectedModel ? `${selectedModel.credits} credits` : "send"}
         </button>
         <button
           onClick={handleSend}

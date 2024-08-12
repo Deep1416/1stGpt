@@ -10,13 +10,15 @@ import {
 import { RiFullscreenFill } from "react-icons/ri";
 import { MdOutlineLightMode } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { selectModel } from "../../../redux/modelSlice";
 
 const Topbar = ({ isSidebarCollapsed, totalCoins }) => {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [isProfilePopupVisible, setIsProfilePopupVisible] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   useEffect(() => {
     const storedUserInfo = localStorage.getItem("userInfo");
     if (storedUserInfo) {
@@ -35,6 +37,13 @@ const Topbar = ({ isSidebarCollapsed, totalCoins }) => {
 
   const handleProfilePopupToggle = () => {
     setIsProfilePopupVisible(!isProfilePopupVisible);
+  };
+
+  
+
+  const handleModelClick = (modelName, credits) => {
+    dispatch(selectModel({ modelName, credits })); // Dispatch the selected model with its credits
+    setIsPopupVisible(false); // Close the modal after selecting
   };
 
   return (
@@ -79,43 +88,56 @@ const Topbar = ({ isSidebarCollapsed, totalCoins }) => {
           </span>
         </div>
         {isPopupVisible && (
-          <div className="absolute top-[60px] -right-48 mt-2 mx-auto bg-[#2B2830] text-[#b8b5ac] rounded-lg shadow-lg z-50 w-[700px]">
-            <section className="flex flex-col gap-2 p-4 ">
-              <div className="flex justify-between items-center">
-                <div className="text-xl font-semibold">Favorite Models</div>
-                <div>11 models</div>
-              </div>
-              <hr />
-              <article className="p-2">
-                <h2 className="text-xl font-bold">Gpt-4 omi</h2>
-                <p>
-                  <span>10</span> credits/message
-                </p>
-              </article>
-              <hr />
-              <article className="p-2">
-                <h2>Groq Llama3 70B</h2>
-                <p>
-                  <span>10</span> credits/message
-                </p>
-              </article>
-              <hr />
-              <article className="p-2">
-                <h2>Google Gemini</h2>
-                <p>
-                  <span>10</span> credits/message
-                </p>
-              </article>
-              <hr />
-              <article className="p-2">
-                <h2>Gpt 3.5</h2>
-                <p>
-                  <span>10</span> credits/message
-                </p>
-              </article>
-            </section>
-          </div>
-        )}
+        <div className="absolute top-[60px] -right-48 mt-2 mx-auto bg-[#2B2830] text-[#b8b5ac] rounded-lg shadow-lg z-50 w-[700px]">
+          <section className="flex flex-col gap-2 p-4 ">
+            <div className="flex justify-between items-center">
+              <div className="text-xl font-semibold">Favorite Models</div>
+              <div>11 models</div>
+            </div>
+            <hr />
+            <article
+              className="p-2 cursor-pointer"
+              onClick={() => handleModelClick("Gpt-4 omi", 10)}
+            >
+              <h2 className="text-xl font-bold">Gpt-4 omi</h2>
+              <p>
+                <span>10</span> credits/message
+              </p>
+            </article>
+            <hr />
+            <article
+              className="p-2 cursor-pointer"
+              onClick={() => handleModelClick("Groq Llama3 70B", 10)}
+            >
+              <h2>Groq Llama3 70B</h2>
+              <p>
+                <span>10</span> credits/message
+              </p>
+            </article>
+            <hr />
+            <article
+              className="p-2 cursor-pointer"
+              onClick={() => handleModelClick("Google Gemini", 10)}
+            >
+              <h2>Google Gemini</h2>
+              <p>
+                <span>10</span> credits/message
+              </p>
+            </article>
+            <hr />
+            <article
+              className="p-2 cursor-pointer"
+              onClick={() => handleModelClick("Gpt 3.5", 10)}
+            >
+              <h2>Gpt 3.5</h2>
+              <p>
+                <span>10</span> credits/message
+              </p>
+            </article>
+          </section>
+        </div>
+      )}
+        ;
       </div>
 
       <div className="flex items-center space-x-3 flex-wrap gap-1 flex-shrink-0">
