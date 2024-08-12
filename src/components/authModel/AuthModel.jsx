@@ -59,8 +59,8 @@ const AuthModal = ({ isOpen, onClose }) => {
       // console.log(response,response?.data?.data?.accessToken);
 
       if (!isRegister && response?.data) {
-        dispatch(addCoins( response?.data?.data?.user?.credit))
-        console.log("form login page",response?.data?.data?.user)
+        dispatch(addCoins(response?.data?.data?.user?.credit))
+        console.log("form login page",response?.data?.data?.user?.credit)
         localStorage.setItem('token', response?.data?.data?.accessToken);
         localStorage.setItem('userInfo', JSON.stringify(response?.data?.data?.user));
         setTimeout(() => {

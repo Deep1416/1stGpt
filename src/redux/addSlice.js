@@ -10,9 +10,11 @@ const addSlice = createSlice({
   initialState,
   reducers: {
     addCoins: (state, action) => {
-      state.data = action.payload; // Correctly update state.data
+      state.coinBalance = action.payload; // Correctly update state.data
     },
-   
+    deductCoin:(state, action) => {
+      state.coinBalance -= action.payload;
+    }
   },
 });
 

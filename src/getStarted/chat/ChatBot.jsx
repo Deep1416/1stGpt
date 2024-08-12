@@ -22,11 +22,13 @@ const ChatBot = () => {
 
   // Get selected model from Redux
   const selectedModel = useSelector((state) => state?.model?.selectedModel);
+  console.log(selectedModel)
 
   // Set a default model name if none is selected
   const defaultModelName = "gpt";
   const modelName = selectedModel?.modelName || defaultModelName;
-  const {coinBalance} = useSelector(store=>store?.coins)
+  const modelCoin = selectedModel?.credits || 10;
+ 
   const fetchResponse = async (query) => {
     const token = localStorage.getItem("token"); // Retrieve token from localStorage
 
@@ -129,7 +131,7 @@ const ChatBot = () => {
         >
           <FiSend size={20} />
           <div className="text-[10px]">
-          {coinBalance} Credits
+          {modelCoin} Credits
           </div>
         </button>
       </div>
