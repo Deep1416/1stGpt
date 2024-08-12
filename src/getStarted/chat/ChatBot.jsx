@@ -26,7 +26,7 @@ const ChatBot = () => {
   // Set a default model name if none is selected
   const defaultModelName = "gpt";
   const modelName = selectedModel?.modelName || defaultModelName;
-
+  const {coinBalance} = useSelector(store=>store?.coins)
   const fetchResponse = async (query) => {
     const token = localStorage.getItem("token"); // Retrieve token from localStorage
 
@@ -125,9 +125,12 @@ const ChatBot = () => {
         />
         <button
           onClick={handleSend}
-          className="bg-[#1f1f2e] text-white px-4 py-2 rounded-r-lg"
+          className="bg-[#1f1f2e] text-white px-4 py-2 rounded-r-lg flex items-center gap-2"
         >
           <FiSend size={20} />
+          <div className="text-[10px]">
+          {coinBalance} Credits
+          </div>
         </button>
       </div>
     </>

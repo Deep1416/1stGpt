@@ -13,7 +13,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { selectModel } from "../../../redux/modelSlice";
 
-const Topbar = ({ isSidebarCollapsed, totalCoins }) => {
+const Topbar = () => {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [isProfilePopupVisible, setIsProfilePopupVisible] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
@@ -57,7 +57,7 @@ const Topbar = ({ isSidebarCollapsed, totalCoins }) => {
           <div className="font-heebo text-black">
             <div className="flex gap-1 items-center w-full text-center rounded-[5px] bg-[#2b2830] py-[5px] pr-2">
               <span className="inline-block w-[50%] text-[#c0bcca]">
-                {totalCoins}
+                {coinBalance}
               </span>
               <div className="h-6 w-[1px] bg-[#413e45]"></div>
               <span className="inline-block w-[50%] text-[12px] text-[#7e7a86]">
