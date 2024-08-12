@@ -1,7 +1,64 @@
+import axios from "axios";
 import React, { useState } from "react";
 
 const Pricing = () => {
   const [billingCycle, setBillingCycle] = useState("yearly");
+  const [packageName, setPackageName] = useState("Personal");
+  const [amount, setAmount] = useState("15");
+  const [currency, setCurrency] = useState("USD");
+  const [paymentStatus, setPaymentStatus] = useState(null);
+  const [error, setError] = useState(null);
+
+  const handlePayNow = async (PkgName) => {
+    setPackageName(PkgName);
+
+    // Update amount based on billing cycle and package name
+    if (billingCycle === "yearly") {
+      if (PkgName === "Personal") {
+        setAmount("15");
+      } else if (PkgName === "Premium") {
+        setAmount("20");
+      } else {
+        setAmount("30");
+      }
+    } else {
+      if (PkgName === "Personal") {
+        setAmount("20");
+      } else if (PkgName === "Premium") {
+        setAmount("25");
+      } else {
+        setAmount("35");
+      }
+    }
+
+    // console.log(amount, packageName);
+
+    try {
+      const token = localStorage.getItem("token"); // Retrieve token from localStorage
+
+      const response = await axios.post(
+        "http://localhost:4000/v1/pay",
+        { currency, amount, packageName },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include token in headers
+            "Content-Type": "application/json", // Content-Type for JSON payload
+          },
+        }
+      );
+
+      console.log(response);
+
+      const { links } = response.data.data;
+      const approvalUrl = links.find(
+        (link) => link.rel === "approval_url"
+      ).href;
+      window.location.href = approvalUrl;
+    } catch (error) {
+      setError("Payment initiation failed. Please try again.");
+      console.error("Payment initiation error:", error);
+    }
+  };
 
   const handleBillingCycleChange = (cycle) => {
     setBillingCycle(cycle);
@@ -71,7 +128,10 @@ const Pricing = () => {
                     </span>{" "}
                     total
                   </p>
-                  <button className="w-full max-w-full font-semibold text-[14px] tracking-wider font-heebo h-10 leading-10 px-[34px] uppercase text-center whitespace-nowrap rounded-[20px] overflow-hidden text-ellipsis bg-[#1c1925] text-[#c0bcca] border-[#8768f8] border-2">
+                  <button
+                    onClick={() => handlePayNow("Personal")}
+                    className="w-full max-w-full font-semibold text-[14px] tracking-wider font-heebo h-10 leading-10 px-[34px] uppercase text-center whitespace-nowrap rounded-[20px] overflow-hidden text-ellipsis bg-[#1c1925] text-[#c0bcca] border-[#8768f8] border-2"
+                  >
                     Buy Personal
                   </button>
                 </div>
@@ -95,7 +155,10 @@ const Pricing = () => {
                     </span>{" "}
                     total
                   </p>
-                  <button className="w-full max-w-full font-semibold text-[14px] tracking-wider font-heebo h-10 leading-10 px-[34px] uppercase text-center whitespace-nowrap rounded-[20px] overflow-hidden text-ellipsis bg-[#1c1925] text-[#c0bcca] border-[#8768f8] border-2">
+                  <button
+                    onClick={() => handlePayNow("Premium")}
+                    className="w-full max-w-full font-semibold text-[14px] tracking-wider font-heebo h-10 leading-10 px-[34px] uppercase text-center whitespace-nowrap rounded-[20px] overflow-hidden text-ellipsis bg-[#1c1925] text-[#c0bcca] border-[#8768f8] border-2"
+                  >
                     Buy Premium
                   </button>
                 </div>
@@ -119,7 +182,10 @@ const Pricing = () => {
                     </span>{" "}
                     total
                   </p>
-                  <button className="w-full max-w-full font-semibold text-[14px] tracking-wider font-heebo h-10 leading-10 px-[34px] uppercase text-center whitespace-nowrap rounded-[20px] overflow-hidden text-ellipsis bg-[#1c1925] text-[#c0bcca] border-[#8768f8] border-2">
+                  <button
+                    onClick={() => handlePayNow("Enterprise")}
+                    className="w-full max-w-full font-semibold text-[14px] tracking-wider font-heebo h-10 leading-10 px-[34px] uppercase text-center whitespace-nowrap rounded-[20px] overflow-hidden text-ellipsis bg-[#1c1925] text-[#c0bcca] border-[#8768f8] border-2"
+                  >
                     Buy Enterprise
                   </button>
                 </div>
@@ -396,18 +462,27 @@ const Pricing = () => {
             <div className="-ml-[1px] flex items-center">
               <div className="w-[31%] max-w-[31%] px-10 py-[30px] border-l border-l-[#312e37]"></div>
               <div className="text-center w-[23%] max-w-[23%] px-10 py-[30px] border-l border-l-[#312e37]">
-                <button className="w-full max-w-full font-semibold text-[14px] tracking-wider font-heebo h-10 leading-10 px-[34px] uppercase text-center whitespace-nowrap rounded-[20px] overflow-hidden text-ellipsis bg-[#1c1925] text-[#c0bcca] border-[#8768f8] border-2">
+                <button
+                  onClick={() => handlePayNow("Personal")}
+                  className="w-full max-w-full font-semibold text-[14px] tracking-wider font-heebo h-10 leading-10 px-[34px] uppercase text-center whitespace-nowrap rounded-[20px] overflow-hidden text-ellipsis bg-[#1c1925] text-[#c0bcca] border-[#8768f8] border-2"
+                >
                   Buy Personal
                 </button>{" "}
               </div>
               <div className="text-center w-[23%] max-w-[23%] px-10 py-[30px] border-l border-l-[#312e37]">
-                <button className="w-full max-w-full font-semibold text-[14px] tracking-wider font-heebo h-10 leading-10 px-[34px] uppercase text-center whitespace-nowrap rounded-[20px] overflow-hidden text-ellipsis bg-[#1c1925] text-[#c0bcca] border-[#8768f8] border-2">
-                Buy Premium
+                <button
+                  onClick={() => handlePayNow("Premium")}
+                  className="w-full max-w-full font-semibold text-[14px] tracking-wider font-heebo h-10 leading-10 px-[34px] uppercase text-center whitespace-nowrap rounded-[20px] overflow-hidden text-ellipsis bg-[#1c1925] text-[#c0bcca] border-[#8768f8] border-2"
+                >
+                  Buy Premium
                 </button>{" "}
               </div>
               <div className="text-center w-[23%] max-w-[23%] px-10 py-[30px] border-l border-l-[#312e37]">
-                <button className="w-full max-w-full font-semibold text-[14px] tracking-wider font-heebo h-10 leading-10 px-[34px] uppercase text-center whitespace-nowrap rounded-[20px] overflow-hidden text-ellipsis bg-[#1c1925] text-[#c0bcca] border-[#8768f8] border-2">
-                Buy Enterprice
+                <button
+                  onClick={() => handlePayNow("Premium")}
+                  className="w-full max-w-full font-semibold text-[14px] tracking-wider font-heebo h-10 leading-10 px-[34px] uppercase text-center whitespace-nowrap rounded-[20px] overflow-hidden text-ellipsis bg-[#1c1925] text-[#c0bcca] border-[#8768f8] border-2"
+                >
+                  Buy Enterprice
                 </button>{" "}
               </div>
             </div>

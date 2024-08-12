@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+
 const initialState = {
-  data: [],
+  coinBalance: 0
 };
 
 const addSlice = createSlice({
@@ -11,6 +12,7 @@ const addSlice = createSlice({
     addCoins: (state, action) => {
       state.data = action.payload; // Correctly update state.data
     },
+   
   },
 });
 

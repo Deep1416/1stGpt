@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addCoins } from '../../redux/addSlice';
+
 
 
 const AuthModal = ({ isOpen, onClose }) => {
@@ -16,6 +19,8 @@ const AuthModal = ({ isOpen, onClose }) => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
 
 
 
@@ -54,6 +59,8 @@ const AuthModal = ({ isOpen, onClose }) => {
       // console.log(response,response?.data?.data?.accessToken);
 
       if (!isRegister && response?.data) {
+        dispatch(addCoins( response?.data?.data?.user?.credit))
+        console.log("form login page",response?.data?.data?.user)
         localStorage.setItem('token', response?.data?.data?.accessToken);
         localStorage.setItem('userInfo', JSON.stringify(response?.data?.data?.user));
         setTimeout(() => {

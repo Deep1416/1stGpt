@@ -18,31 +18,37 @@ const ChatBot = () => {
   ]);
 
   const [input, setInput] = useState("");
-  const [searchMethod, setSearchMethod] = useState("gemini"); // Default search method
   const messagesEndRef = useRef(null);
 
   // Get selected model from Redux
   const selectedModel = useSelector((state) => state?.model?.selectedModel);
 
-  const fetchResponse = async (query, file) => {
+  // Set a default model name if none is selected
+  const defaultModelName = "gpt";
+  const modelName = selectedModel?.modelName || defaultModelName;
+
+  const fetchResponse = async (query) => {
     const token = localStorage.getItem("token"); // Retrieve token from localStorage
-    const formData = new FormData();
-    formData.append("query", query);
-    if (file) {
-      formData.append("file", file);
-    }
+
     try {
       const response = await axios.post(
-        `http://localhost:4000/v1/ai/${searchMethod}`,
-        formData,
+        `http://localhost:4000/v1/ai/${modelName}`,
+        { query }, // Send query as JSON
         {
           headers: {
             Authorization: `Bearer ${token}`, // Include token in headers
-            "Content-Type": "multipart/form-data", // Required for file uploads
+            "Content-Type": "application/json", // Set content type to JSON
           },
         }
       );
-      const reply = response?.data?.data?.Output;
+      console.log(response);
+      let reply = null
+      if(modelName==="lama"){
+        reply =response?.data?.text
+      }else{
+        reply = response?.data?.data?.Output;
+      }
+      
       setMessages((prevMessages) => [
         ...prevMessages,
         { type: "bot", text: reply },
@@ -109,14 +115,6 @@ const ChatBot = () => {
         </div>
       </div>
       <div className="px-10 rounded-sm sticky z-50 bottom-0 bg-[#0f0e11] flex gap-1 mx-auto p-5">
-        <select
-          value={searchMethod}
-          onChange={(e) => setSearchMethod(e.target.value)}
-          className="bg-[#1f1f2e] text-white px-4 py-2 rounded outline-none"
-        >
-          <option value="gemini">Gemini</option>
-          <option value="gpt">OpenAI</option>
-        </select>
         <input
           type="text"
           value={input}
@@ -125,9 +123,6 @@ const ChatBot = () => {
           placeholder="Send a message..."
           className="bg-[#1f1f2e] text-white px-4 py-2 w-full rounded outline-none"
         />
-        <button className="bg-[#1f1f2e] text-white px-4 py-1 rounded-r-none">
-          {selectedModel ? `${selectedModel.credits} credits` : "send"}
-        </button>
         <button
           onClick={handleSend}
           className="bg-[#1f1f2e] text-white px-4 py-2 rounded-r-lg"
