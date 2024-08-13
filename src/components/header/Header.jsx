@@ -73,7 +73,7 @@ const Header = () => {
                 <li>Testimonial</li>
               </Link>
               <Link to="Faq" spy={true} smooth={true} duration={500}>
-                <li>Faq</li>
+                <li>FAQ</li>
               </Link>
               <Link to="Blog" spy={true} smooth={true} duration={500}>
                 <li>Blog</li>
