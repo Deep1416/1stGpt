@@ -4,8 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addCoins } from '../../redux/addSlice';
 
-
-
 const AuthModal = ({ isOpen, onClose }) => {
   const [isRegister, setIsRegister] = useState(true);
   const [formData, setFormData] = useState({
@@ -20,9 +18,6 @@ const AuthModal = ({ isOpen, onClose }) => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-
-
 
   const validate = () => {
     const newErrors = {};
@@ -53,30 +48,32 @@ const AuthModal = ({ isOpen, onClose }) => {
 
     setErrors({});
     setLoading(true);
-    const url = isRegister ? 'http://localhost:4000/v1/user/register' : 'http://localhost:4000/v1/user/login';
+
     try {
-      const response = await axios.post(url, formData);
-      // console.log(response,response?.data?.data?.accessToken);
+      // Get the reCAPTCHA token
+      const token = await grecaptcha.enterprise.execute('6LevEikqAAAAAMA1Fss-QONO_4q0lJTBIa3gAGnE', { action: 'LOGIN' });
+
+      // Include the token in your request
+      const url = isRegister ? 'http://localhost:4000/v1/user/register' : 'http://localhost:4000/v1/user/login';
+      const response = await axios.post(url, {
+        ...formData,
+        recaptchaToken: token,  // Send the reCAPTCHA token to the backend
+      });
 
       if (!isRegister && response?.data) {
-        dispatch(addCoins(response?.data?.data?.user?.credit))
-        console.log("form login page",response?.data?.data?.user?.credit)
+        dispatch(addCoins(response?.data?.data?.user?.credit));
         localStorage.setItem('token', response?.data?.data?.accessToken);
         localStorage.setItem('userInfo', JSON.stringify(response?.data?.data?.user));
         setTimeout(() => {
-          navigate('/get')
+          navigate('/get');
         }, 300);
-
       }
-     
 
       if (isRegister) {
         setIsRegister(false);
       }
-      // Handle successful registration or login
     } catch (error) {
       console.error(error);
-      // Handle registration or login error
       if (error.response && error.response.data) {
         setErrors({ general: error.response.data.message });
       }
@@ -229,15 +226,18 @@ const AuthModal = ({ isOpen, onClose }) => {
             </p>
           )}
         </div>
-        <div className="mt-4 text-center">
-          <button
-            onClick={handleGoogleLogin}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-            disabled={loading}
-          >
-            Login with Google
-          </button>
-        </div>
+        <button
+          type="button"
+          onClick={handleGoogleLogin}
+          className="mt-4 w-full flex justify-center items-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
+        >
+          <img
+            src="https://developers.google.com/identity/images/g-logo.png"
+            alt="Google Logo"
+            className="mr-2"
+          />
+          {isRegister ? 'Sign up with Google' : 'Sign in with Google'}
+        </button>
       </div>
     </div>
   );
