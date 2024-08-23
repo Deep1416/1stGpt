@@ -15,6 +15,7 @@ const AuthModal = ({ isOpen, onClose }) => {
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [isRobotChecked, setIsRobotChecked] = useState(false); // State for the checkbox
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ const AuthModal = ({ isOpen, onClose }) => {
       if (!formData.firstname) newErrors.firstname = 'Please enter firstname';
       if (!formData.lastname) newErrors.lastname = 'Please enter lastname';
       if (!formData.username) newErrors.username = 'Please enter username';
+      if (!isRobotChecked) newErrors.robot = 'Please confirm you are not a robot';
     }
     if (!formData.email) newErrors.email = 'Please enter email';
     if (!formData.password) newErrors.password = 'Please enter password';
@@ -36,6 +38,10 @@ const AuthModal = ({ isOpen, onClose }) => {
       ...formData,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handleCheckboxChange = () => {
+    setIsRobotChecked(!isRobotChecked);
   };
 
   const handleSubmit = async (e) => {
@@ -50,14 +56,12 @@ const AuthModal = ({ isOpen, onClose }) => {
     setLoading(true);
 
     try {
-      // Get the reCAPTCHA token
       const token = await grecaptcha.enterprise.execute('6LevEikqAAAAAMA1Fss-QONO_4q0lJTBIa3gAGnE', { action: 'LOGIN' });
 
-      // Include the token in your request
-      const url = isRegister ? 'http://localhost:4000/v1/user/register' : 'http://localhost:4000/v1/user/login';
+      const url = isRegister ? 'http://localhost:3000/v1/user/register' : 'http://localhost:3000/v1/user/login';
       const response = await axios.post(url, {
         ...formData,
-        recaptchaToken: token,  // Send the reCAPTCHA token to the backend
+        recaptchaToken: token,
       });
 
       if (!isRegister && response?.data) {
@@ -83,7 +87,7 @@ const AuthModal = ({ isOpen, onClose }) => {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = 'http://localhost:4000/auth/google';
+    window.location.href = 'http://localhost:3000/auth/google';
   };
 
   if (!isOpen) return null;
@@ -146,6 +150,8 @@ const AuthModal = ({ isOpen, onClose }) => {
                 />
                 {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username}</p>}
               </div>
+             
+              {errors.robot && <p className="text-red-500 text-sm mt-1">{errors.robot}</p>}
             </>
           )}
           <div>
@@ -212,6 +218,18 @@ const AuthModal = ({ isOpen, onClose }) => {
               >
                 Click here to login
               </button>
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="robotCheck"
+                  checked={isRobotChecked}
+                  onChange={handleCheckboxChange}
+                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                />
+                <label htmlFor="robotCheck" className="ml-2 block text-sm text-gray-900">
+                  I'm not a robot
+                </label>
+              </div>
             </p>
           ) : (
             <p className="text-sm text-gray-600">
@@ -223,21 +241,19 @@ const AuthModal = ({ isOpen, onClose }) => {
               >
                 Click here to register
               </button>
+              
             </p>
           )}
         </div>
-        <button
-          type="button"
-          onClick={handleGoogleLogin}
-          className="mt-4 w-full flex justify-center items-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
-        >
-          <img
-            src="https://developers.google.com/identity/images/g-logo.png"
-            alt="Google Logo"
-            className="mr-2"
-          />
-          {isRegister ? 'Sign up with Google' : 'Sign in with Google'}
-        </button>
+        <div className="mt-4 text-center">
+          <button
+            type="button"
+            onClick={handleGoogleLogin}
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+          >
+            Sign in with Google
+          </button>
+        </div>
       </div>
     </div>
   );
