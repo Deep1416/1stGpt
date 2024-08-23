@@ -14,15 +14,22 @@ import { BiLogOut } from "react-icons/bi";
 import { IoCubeOutline } from "react-icons/io5";
 import { MdAdd } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
+import axios from 'axios'
 
 const Sidebar = ({ isSidebarCollapsed, toggleSidebar,totalCoins,setTotalCoins }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
+   
+    // Clear local storage
     localStorage.clear();
-    navigate("/");
+  
+    // Clear the AccessToken cookie by setting it to expire immediately
+    document.cookie = "AccessToken=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+  
+    // Redirect to the home page
+    navigate('/');
   };
-
   return (
     <>
       <div className="flex justify-between items-center h-[100px] px-4 border-b border-[#312e37] text-black">

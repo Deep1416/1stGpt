@@ -12,16 +12,19 @@ import { MdOutlineLightMode } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { selectModel } from "../../../redux/modelSlice";
+import axios from 'axios'
 
 const Topbar = () => {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [isProfilePopupVisible, setIsProfilePopupVisible] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
-  const [selectedModel, setSelectedModel] = useState("Liberty"); // State to hold the selected model
+  const [selectedModel, setSelectedModel] = useState("Liberty"); 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const {coinBalance} = useSelector(store=>store?.coins)
-  console.log(coinBalance);
+
+  // Accessing coin balance from Redux store
+  const coinBalance = useSelector((store) => store.coins.coinBalance);
+  console.log(coinBalance,"form topbar");
   
 
   useEffect(() => {
@@ -32,10 +35,17 @@ const Topbar = () => {
   }, []);
 
   const handleLogout = () => {
+   
+  
+    // Clear local storage
     localStorage.clear();
-    navigate("/");
+  
+    // Clear the AccessToken cookie by setting it to expire immediately
+    document.cookie = "AccessToken=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+  
+    // Redirect to the home page
+    navigate('/');
   };
-
   const handlePopupToggle = () => {
     setIsPopupVisible(!isPopupVisible);
   };
@@ -45,23 +55,23 @@ const Topbar = () => {
   };
 
   const handleModelClick = (modelName, credits) => {
-    setSelectedModel(modelName); // Update the state with the selected model name
-    dispatch(selectModel({ modelName, credits })); // Dispatch the selected model with its credits
-    setIsPopupVisible(false); // Close the modal after selecting
+    setSelectedModel(modelName); 
+    dispatch(selectModel({ modelName, credits })); 
+    setIsPopupVisible(false); 
   };
 
   return (
     <>
-      <div className="">
+      <div>
         <div className="flex gap-5 justify-evenly items-center flex-grow">
           <div className="font-heebo text-black">
             <div className="flex gap-1 items-center w-full text-center rounded-[5px] bg-[#2b2830] py-[5px] pr-2">
               <span className="inline-block w-[50%] text-[#c0bcca]">
-                {coinBalance}
+                {coinBalance ?? 0} {/* Fallback to 0 if coinBalance is undefined */}
               </span>
               <div className="h-6 w-[1px] bg-[#413e45]"></div>
               <span className="inline-block w-[50%] text-[12px] text-[#7e7a86]">
-                Credit Remain
+                Credits Remaining
               </span>
             </div>
           </div>
@@ -75,6 +85,7 @@ const Topbar = () => {
         </div>
       </div>
 
+      {/* Model Selection */}
       <div className="flex relative" onClick={handlePopupToggle}>
         <div className="uppercase text-black flex cursor-pointer items-center gap-2 px-2 py-1 border rounded-l-md bg-white">
           <span className="inline-block text-[10px] font-heebo text-[#212529]">
@@ -83,7 +94,7 @@ const Topbar = () => {
         </div>
         <div>
           <span className="uppercase text-[#6c757d] font-semibold flex cursor-pointer items-center gap-2 px-2 py-1 border-white border rounded-r-md">
-            <span>{selectedModel}</span> {/* Display the selected model name */}
+            <span>{selectedModel}</span>
             {isPopupVisible ? (
               <FaCaretUp className="text-[15px]" />
             ) : (
@@ -93,12 +104,13 @@ const Topbar = () => {
         </div>
         {isPopupVisible && (
           <div className="absolute top-[60px] -right-48 mt-2 mx-auto bg-[#2B2830] text-[#b8b5ac] rounded-lg shadow-lg z-50 w-[700px]">
-            <section className="flex flex-col gap-2 p-4 ">
+            <section className="flex flex-col gap-2 p-4">
               <div className="flex justify-between items-center">
                 <div className="text-xl font-semibold">Favorite Models</div>
                 <div>11 models</div>
               </div>
               <hr />
+              {/* Model Options */}
               <article
                 className="p-2 cursor-pointer"
                 onClick={() => handleModelClick("gpt", 10)}
@@ -143,6 +155,7 @@ const Topbar = () => {
         )}
       </div>
 
+      {/* Profile Section */}
       <div className="flex items-center space-x-3 flex-wrap gap-1 flex-shrink-0">
         <button
           className="bg-[#2b2830] hover:bg-gray-800 p-3 rounded-lg focus:outline-none transition-colors relative"

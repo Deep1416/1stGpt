@@ -19,7 +19,7 @@ const addSlice = createSlice({
 });
 
 // Exporting the action creator
-export const { addCoins } = addSlice.actions;
+export const { addCoins,deductCoin } = addSlice.actions;
 
 // Exporting the reducer
 export default addSlice.reducer;

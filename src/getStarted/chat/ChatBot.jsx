@@ -1,7 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
-import axios from "axios";
+
 import { FiSend } from "react-icons/fi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import React, { useState, useRef, useEffect } from "react";
+
+import axios from "axios";
+import { addCoins, deductCoin } from "./../../redux/addSlice"; // Import your action creators
+
+
+
+
 
 const ChatBot = () => {
   const [messages, setMessages] = useState([
@@ -19,22 +26,22 @@ const ChatBot = () => {
 
   const [input, setInput] = useState("");
   const messagesEndRef = useRef(null);
+  const dispatch = useDispatch();
 
   // Get selected model from Redux
   const selectedModel = useSelector((state) => state?.model?.selectedModel);
-  console.log(selectedModel)
 
   // Set a default model name if none is selected
   const defaultModelName = "gpt";
   const modelName = selectedModel?.modelName || defaultModelName;
   const modelCoin = selectedModel?.credits || 10;
- 
+
   const fetchResponse = async (query) => {
     const token = localStorage.getItem("token"); // Retrieve token from localStorage
 
     try {
       const response = await axios.post(
-        `http://localhost:4000/v1/ai/${modelName}`,
+        `http://localhost:3000/v1/ai/${modelName}`,
         { query }, // Send query as JSON
         {
           headers: {
@@ -43,20 +50,42 @@ const ChatBot = () => {
           },
         }
       );
-      console.log(response);
-      let reply = null
-      if(modelName==="lama"){
-        reply =response?.data?.text
-      }else{
+
+      let reply = null;
+      if (modelName === "lama") {
+        reply = response?.data?.text;
+      } else {
         reply = response?.data?.data?.Output;
       }
-      
+
       setMessages((prevMessages) => [
         ...prevMessages,
         { type: "bot", text: reply },
       ]);
     } catch (error) {
       console.error("Error fetching response:", error);
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { type: "bot", text: "Sorry, I couldn't fetch a response." },
+      ]);
+    }
+  };
+
+  const fetchCoin = async () => {
+    const token = localStorage.getItem("token"); // Retrieve token from localStorage
+
+    try {
+      const response = await axios.get(`http://localhost:3000/v1/user/token`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include token in headers
+        },
+      });
+
+      console.log("coin response", response?.data?.data?.Credit, typeof(response?.data?.data?.Credit));
+
+      dispatch(addCoins(response?.data?.data?.Credit));
+    } catch (error) {
+      console.log("from coin endpoint", error);
     }
   };
 
@@ -67,7 +96,9 @@ const ChatBot = () => {
         { type: "user", text: input },
       ]);
       fetchResponse(input);
-      setInput("");
+      fetchCoin(); // Fetch coin after sending the message
+      dispatch(deductCoin(modelCoin)); // Deduct the correct number of coins
+      setInput(""); // Clear the input after sending the message
     }
   };
 
@@ -80,7 +111,6 @@ const ChatBot = () => {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
-
   return (
     <>
       <div className="flex flex-col z-10 bg-[#0f0e11] min-h-screen justify-end relative">
