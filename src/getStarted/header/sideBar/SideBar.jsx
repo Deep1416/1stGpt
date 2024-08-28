@@ -94,8 +94,8 @@ const Sidebar = ({ isSidebarCollapsed, toggleSidebar,totalCoins,setTotalCoins })
               <GoHome className="text-xl" />
               {!isSidebarCollapsed && (
                 <span className="font-semibold inline-block  ">
-                  Clear Conversations
-                </span>
+                Home
+              </span>
               )}
             </li>
           </Link>
@@ -109,10 +109,10 @@ const Sidebar = ({ isSidebarCollapsed, toggleSidebar,totalCoins,setTotalCoins })
             <FaUser className="text-xl" />
             {!isSidebarCollapsed && <span> {totalCoins} Credits</span>}
           </li>
-          <li className="flex items-center gap-2 py-1 px-2 rounded hover:bg-[#2b2830] w-fit">
+          {/* <li className="flex items-center gap-2 py-1 px-2 rounded hover:bg-[#2b2830] w-fit">
             <IoCubeOutline className="text-xl" />
             {!isSidebarCollapsed && <span>Affiliate Program</span>}
-          </li>
+          </li> */}
           <li
             className="flex items-center gap-2 py-1 px-2 rounded hover:bg-[#2b2830] w-fit cursor-pointer"
             onClick={handleLogout}

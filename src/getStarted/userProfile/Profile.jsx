@@ -64,7 +64,7 @@ const Profile = () => {
                       Name
                     </h4>
                     <h3 className="m-0 p-0 font-normal text-base text-[#c0bcca] font-heebo">
-                      {userInfo?.firstname+" " +userInfo?.lastname ?? "N/A"}
+                      {userInfo?.firstname + " " + userInfo?.lastname ?? "N/A"}
                     </h3>
                   </div>
                 </li>
@@ -102,9 +102,11 @@ const Profile = () => {
               </p>
             </div>
             <div>
-              <button className="w-fit max-w-full font-medium text-[14px] tracking-wider font-heebo h-10 leading-10 py-0 px-[34px] uppercase text-center whitespace-nowrap rounded-[20px] overflow-hidden text-ellipsis bg-[#1c1925] text-[#c0bcca] border-2 border-[#8768f8]">
-                Upgrade
-              </button>
+              <Link to={"/get/pricing"}>
+                <button className="w-fit max-w-full font-medium text-[14px] tracking-wider font-heebo h-10 leading-10 py-0 px-[34px] uppercase text-center whitespace-nowrap rounded-[20px] overflow-hidden text-ellipsis bg-[#1c1925] text-[#c0bcca] border-2 border-[#8768f8]">
+                  Upgrade
+                </button>
+              </Link>
             </div>
           </div>
           <div className="rounded-[5px] flex items-center justify-between mb-[38px] gap-[30px] pt-[38px] pb-[33px] border border-[#312e37] bg-[#17151b] px-[30px]">
