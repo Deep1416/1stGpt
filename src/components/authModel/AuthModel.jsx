@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addCoins } from '../../redux/addSlice';
 
+axios.defaults.withCredentials = true;
+
 const AuthModal = ({ isOpen, onClose }) => {
   const [isRegister, setIsRegister] = useState(true);
   const [formData, setFormData] = useState({
