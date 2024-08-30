@@ -25,7 +25,7 @@ const ChatBot = () => {
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [showPopup, setShowPopup] = useState(false); // State for the popup
+  // const [showPopup, setShowPopup] = useState(false); // State for the popup
   const messagesEndRef = useRef(null);
   const dispatch = useDispatch();
   const selectedModel = useSelector((state) => state?.model?.selectedModel);
@@ -89,12 +89,12 @@ const ChatBot = () => {
 
   const handleSend = async () => {
     if (input.trim()) {
-      if (modelCoin <= 10) {
-        setShowPopup(true); 
-        // Show popup if credits are insufficient
-        console.log("modelcoin----------", modelCoin)
-        return;
-      }
+      // if (modelCoin <= 10) {
+      //   // setShowPopup(true); 
+      //   // Show popup if credits are insufficient
+      //   console.log("modelcoin----------", modelCoin)
+      //   return;
+      // }
       
       setMessages((prevMessages) => [
         ...prevMessages,
@@ -222,7 +222,7 @@ const ChatBot = () => {
         </button>
       </div>
       {/* Popup for insufficient credits */}
-      {showPopup && (
+      {/* {showPopup && (
         <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                     <div className="bg-white p-6 rounded-lg relative max-w-sm mx-auto">
             <button
@@ -239,7 +239,7 @@ const ChatBot = () => {
             </p>
           </div>
         </div>
-      )}
+      )} */}
     </>
   );
 };
