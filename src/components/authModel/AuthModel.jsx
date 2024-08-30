@@ -60,7 +60,7 @@ const AuthModal = ({ isOpen, onClose }) => {
     try {
       const token = await grecaptcha.enterprise.execute('6LevEikqAAAAAMA1Fss-QONO_4q0lJTBIa3gAGnE', { action: 'LOGIN' });
 
-      const url = isRegister ? 'http://localhost:3000/v1/user/register' : 'http://localhost:3000/v1/user/login';
+      const url = isRegister ? 'https://freedomgpt-xn47.onrender.com/v1/user/register' : 'https://freedomgpt-xn47.onrender.com/v1/user/login';
       const response = await axios.post(url, {
         ...formData,
         recaptchaToken: token,
@@ -89,7 +89,7 @@ const AuthModal = ({ isOpen, onClose }) => {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = 'http://localhost:3000/auth/google';
+    window.location.href = 'https://freedomgpt-xn47.onrender.com/auth/google';
   };
 
   if (!isOpen) return null;
@@ -153,7 +153,7 @@ const AuthModal = ({ isOpen, onClose }) => {
                 {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username}</p>}
               </div>
              
-              {errors.robot && <p className="text-red-500 text-sm mt-1">{errors.robot}</p>}
+              
             </>
           )}
           <div>
@@ -232,6 +232,7 @@ const AuthModal = ({ isOpen, onClose }) => {
                   I'm not a robot
                 </label>
               </div>
+              {errors.robot && <p className="text-red-500 text-sm mt-1">{errors.robot}</p>}
             </p>
           ) : (
             <p className="text-sm text-gray-600">

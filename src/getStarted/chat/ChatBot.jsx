@@ -39,7 +39,7 @@ const ChatBot = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:3000/v1/ai/${modelName}`,
+        `https://freedomgpt-xn47.onrender.com/v1/ai/${modelName}`,
         { query },
         {
           headers: {
@@ -75,7 +75,7 @@ const ChatBot = () => {
     const token = localStorage.getItem("token");
 
     try {
-      const response = await axios.get(`http://localhost:3000/v1/user/token`, {
+      const response = await axios.get(`https://freedomgpt-xn47.onrender.com/v1/user/token`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

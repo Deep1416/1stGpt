@@ -37,7 +37,7 @@ const Pricing = () => {
       const token = localStorage.getItem("token"); // Retrieve token from localStorage
 
       const response = await axios.post(
-        "http://localhost:3000/v1/pay",
+        "https://freedomgpt-xn47.onrender.com/v1/pay",
         { currency, amount, packageName },
         {
           headers: {
