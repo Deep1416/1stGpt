@@ -107,27 +107,27 @@ const Topbar = () => {
             <section className="flex flex-col gap-2 p-4">
               <div className="flex justify-between items-center">
                 <div className="text-xl font-semibold">Favorite Models</div>
-                <div>11 models</div>
+                <div>4 models</div>
               </div>
               <hr />
               {/* Model Options */}
               <article
                 className="p-2 cursor-pointer"
-                onClick={() => handleModelClick("gpt", 10)}
+                onClick={() => handleModelClick("gpt", 4)}
               >
                 <h2 className="text-xl font-bold">Gpt-4 omi</h2>
                 <p>
-                  <span>10</span> credits/message
+                  <span>4</span> credits/message
                 </p>
               </article>
               <hr />
               <article
                 className="p-2 cursor-pointer"
-                onClick={() => handleModelClick("lama", 10)}
+                onClick={() => handleModelClick("lama", 8)}
               >
                 <h2>Groq Llama3 70B</h2>
                 <p>
-                  <span>10</span> credits/message
+                  <span>8</span> credits/message
                 </p>
               </article>
               <hr />
@@ -137,7 +137,7 @@ const Topbar = () => {
               >
                 <h2>Google Gemini</h2>
                 <p>
-                  <span>10</span> credits/message
+                  <span>1</span> credits/message
                 </p>
               </article>
               <hr />
@@ -147,7 +147,7 @@ const Topbar = () => {
               >
                 <h2>Gpt 3.5</h2>
                 <p>
-                  <span>10</span> credits/message
+                  <span>1</span> credits/message
                 </p>
               </article>
             </section>

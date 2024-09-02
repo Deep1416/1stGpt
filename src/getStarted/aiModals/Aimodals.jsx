@@ -9,6 +9,7 @@ import { BsFileMusic } from "react-icons/bs";
 import { MdOutlineFilterList } from "react-icons/md";
 import aiModals from "./../../store/aiModals"; // Adjust the import path as needed
 import { FaRegBookmark } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 const heading = [
   { id: 1, icon: <IoCubeOutline />, title: "All Models" },
@@ -172,7 +173,7 @@ const Aimodals = () => {
                       <img
                         src={item.img}
                         alt=""
-                        className="h-full w-full object-cover rounded-tl-[5px] rounded-tr-[5px] max-w-full"
+                        className="h-[40vh] w-full object-cover rounded-tl-[5px] rounded-tr-[5px] max-w-full"
                       />
                       <div
                         className="absolute top-2 right-2 p-2 bg-[#2b2830] rounded-full text-[#c0bcca] cursor-pointer group-hover:block hidden"
@@ -202,9 +203,11 @@ const Aimodals = () => {
                         {item.disc}
                       </p>
                     </div>
-                    <div className="h-[41px] py-[10px] px-[15px] flex justify-center items-center border border-[#312e37]">
-                      <p className="text-[#7e7a86]">Try Now</p>
-                    </div>
+                   <Link to={"/get"}>
+                      <div className="h-[41px] py-[10px] px-[15px] flex justify-center items-center border border-[#312e37]">
+                          <p className="text-[#7e7a86]">Try Now</p>
+                      </div>
+                   </Link>
                   </div>
                 </div>
               ))}

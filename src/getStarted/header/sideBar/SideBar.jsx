@@ -62,23 +62,7 @@ const Sidebar = ({ isSidebarCollapsed, toggleSidebar,totalCoins,setTotalCoins })
           </div>
         </Link>
       </div>
-      <div className="p-6 text-[#7e7a86]">
-        {!isSidebarCollapsed && <p className="text-[12px]">TODAY</p>}
-        <ul className="flex flex-col gap-1">
-          <li className="p-2 hover:border-[white] rounded-md border border-[#312e37] flex justify-between items-center space-x-2">
-            <span>Chat Bot Definition</span>
-            {!isSidebarCollapsed && <BsThreeDots />}
-          </li>
-          <li className="p-2 hover:border-[white] rounded-md border border-[#312e37] flex justify-between items-center space-x-2">
-            <span>Chat Bot Definition</span>
-            {!isSidebarCollapsed && <BsThreeDots />}
-          </li>
-          <li className="p-2 hover:border-[white] rounded-md border border-[#312e37] flex justify-between items-center space-x-2">
-            <span>Essay Writing</span>
-            {!isSidebarCollapsed && <BsThreeDots />}
-          </li>
-        </ul>
-      </div>
+     
       <div
         className={`fixed bottom-0 left-0 right-0 ${
           !isSidebarCollapsed ? "p-6 w-64 " : "p-6 w-24"
@@ -105,10 +89,12 @@ const Sidebar = ({ isSidebarCollapsed, toggleSidebar,totalCoins,setTotalCoins })
               {!isSidebarCollapsed && <span>AI Models</span>}
             </li>
           </Link>
-          <li className="flex items-center gap-2 py-1 px-2 rounded hover:bg-[#2b2830] w-fit">
-            <FaUser className="text-xl" />
-            {!isSidebarCollapsed && <span> {totalCoins} Credits</span>}
-          </li>
+         <Link to={"/get/pricing"}>
+            <li  className="flex items-center gap-2 py-1 px-2 rounded hover:bg-[#2b2830] w-fit">
+                <FaUser className="text-xl" />
+                {!isSidebarCollapsed && <span> {totalCoins} Buy Credits</span>}
+              </li>
+         </Link>
           {/* <li className="flex items-center gap-2 py-1 px-2 rounded hover:bg-[#2b2830] w-fit">
             <IoCubeOutline className="text-xl" />
             {!isSidebarCollapsed && <span>Affiliate Program</span>}

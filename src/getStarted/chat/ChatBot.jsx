@@ -31,7 +31,7 @@ const ChatBot = () => {
   const selectedModel = useSelector((state) => state?.model?.selectedModel);
   const defaultModelName = "gpt";
   const modelName = selectedModel?.modelName || defaultModelName;
-  const modelCoin = selectedModel?.credits || 10;
+  const coins = useSelector((state) => state?.data?.coinBalance);
   
   const fetchResponse = async (query) => {
     setLoading(true);
@@ -89,12 +89,10 @@ const ChatBot = () => {
 
   const handleSend = async () => {
     if (input.trim()) {
-      // if (modelCoin <= 10) {
-      //   // setShowPopup(true); 
-      //   // Show popup if credits are insufficient
-      //   console.log("modelcoin----------", modelCoin)
-      //   return;
-      // }
+      if (coins <= 0) {
+        setShowPopup(true); // Show popup if credits are insufficient
+        return;
+      }
       
       setMessages((prevMessages) => [
         ...prevMessages,
@@ -103,10 +101,16 @@ const ChatBot = () => {
       setInput("");
       await fetchCoin(); // Ensure fetchCoin completes before fetching response
       await fetchResponse(input);
-      if(modelCoin>=10){
-        dispatch(deductCoin(modelCoin)); // Deduct coins after fetching the response
-        console.log("inside dispatch fucntion ",modelCoin)
-      } // Fetch response after updating coins
+      if (coins > 0) {
+        if(modelName==='lama'){
+          dispatch(deductCoin(8));
+        }else if(modelName==='gpt'){
+          dispatch(deductCoin(4));
+        }else {
+          dispatch(deductCoin(1)); // Deduct 1 coin after fetching the response
+        }
+        }
+       
 
     }
   };
@@ -218,7 +222,7 @@ const ChatBot = () => {
           className="bg-[#1f1f2e] text-white px-4 py-2 rounded-r-lg flex items-center gap-2"
         >
           <FiSend size={20} />
-          <div className="text-[10px]">{modelCoin} Credits</div>
+          <div className="text-[10px]">{coins} Credits</div>
         </button>
       </div>
       {/* Popup for insufficient credits */}
