@@ -60,7 +60,7 @@ const AuthModal = ({ isOpen, onClose }) => {
     try {
       const token = await grecaptcha.enterprise.execute('6LevEikqAAAAAMA1Fss-QONO_4q0lJTBIa3gAGnE', { action: 'LOGIN' });
 
-      const url = isRegister ? 'https://freedomgpt-xn47.onrender.com/v1/user/register' : 'https://freedomgpt-xn47.onrender.com/v1/user/login';
+      const url = isRegister ? 'https://free.1stgpt.ai/v1/user/register' : 'https://free.1stgpt.ai/v1/user/login';
       const response = await axios.post(url, {
         ...formData,
         recaptchaToken: token,
@@ -89,7 +89,7 @@ const AuthModal = ({ isOpen, onClose }) => {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = 'https://freedomgpt-xn47.onrender.com/auth/google';
+    window.location.href = 'https://free.1stgpt.ai/auth/google';
   };
 
   if (!isOpen) return null;

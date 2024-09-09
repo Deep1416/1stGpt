@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { FiSend, FiX, FiUpload } from "react-icons/fi";
+import { FiSend, FiX } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { addCoins, deductCoin } from "./../../redux/addSlice";
@@ -25,33 +25,26 @@ const ChatBot = () => {
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [file, setFile] = useState(null); // State to store the selected file
+  // const [showPopup, setShowPopup] = useState(false); // State for the popup
   const messagesEndRef = useRef(null);
   const dispatch = useDispatch();
   const selectedModel = useSelector((state) => state?.model?.selectedModel);
   const defaultModelName = "gpt";
   const modelName = selectedModel?.modelName || defaultModelName;
   const coins = useSelector((state) => state?.data?.coinBalance);
-  const [showPopup, setShowPopup]= useState('')
-
+  
   const fetchResponse = async (query) => {
     setLoading(true);
     const token = localStorage.getItem("token");
 
     try {
-      const formData = new FormData();
-      formData.append("query", query);
-      if (modelName === "gemini" && file) {
-        formData.append("file", file);
-      }
-
       const response = await axios.post(
-        `https://freedomgpt-xn47.onrender.com/v1/ai/${modelName}`,
-        formData,
+        `https://free.1stgpt.ai/v1/ai/${modelName}`,
+        { query },
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
           },
         }
       );
@@ -82,7 +75,7 @@ const ChatBot = () => {
     const token = localStorage.getItem("token");
 
     try {
-      const response = await axios.get(`https://freedomgpt-xn47.onrender.com/v1/user/token`, {
+      const response = await axios.get(`https://free.1stgpt.ai/v1/user/${token}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -113,12 +106,12 @@ const ChatBot = () => {
           dispatch(deductCoin(8));
         }else if(modelName==='gpt'){
           dispatch(deductCoin(4));
-        }else if(modelName==='gemini'){
-          dispatch(deductCoin(10)); // Deduct 10 coins for gemini
         }else {
           dispatch(deductCoin(1)); // Deduct 1 coin after fetching the response
         }
-      }
+        }
+       
+
     }
   };
 
@@ -224,37 +217,33 @@ const ChatBot = () => {
           placeholder="Send a message..."
           className="bg-[#1f1f2e] text-white px-4 py-2 w-full rounded outline-none"
         />
-        {modelName === "gemini" && (
-          <label className="bg-[#1f1f2e] text-white px-4 py-2 rounded-l-lg flex items-center gap-2 cursor-pointer">
-            <FiUpload size={20} />
-            <input
-              type="file"
-              onChange={(e) => setFile(e.target.files[0])}
-              style={{ display: "none" }}
-            />
-            Upload
-          </label>
-        )}
         <button
           onClick={handleSend}
-          className="bg-[#7c5fe3] text-white px-4 py-2 rounded-r-lg flex items-center justify-center"
+          className="bg-[#1f1f2e] text-white px-4 py-2 rounded-r-lg flex items-center gap-2"
         >
           <FiSend size={20} />
+          <div className="text-[10px]">{coins} Credits</div>
         </button>
       </div>
-      {showPopup && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-[#1f1f2e] p-5 rounded-lg text-white relative">
+      {/* Popup for insufficient credits */}
+      {/* {showPopup && (
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                    <div className="bg-white p-6 rounded-lg relative max-w-sm mx-auto">
             <button
               onClick={() => setShowPopup(false)}
-              className="absolute top-2 right-2 text-gray-400 hover:text-white"
+              className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
             >
               <FiX size={20} />
             </button>
-            <p>Insufficient credits</p>
+            <h2 className="text-lg font-semibold text-gray-800">
+              Insufficient Credits
+            </h2>
+            <p className="mt-2 text-gray-600">
+              You need more credits to send a message. Please add credits to continue.
+            </p>
           </div>
         </div>
-      )}
+      )} */}
     </>
   );
 };
