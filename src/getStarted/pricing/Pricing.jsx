@@ -2,34 +2,24 @@ import axios from "axios";
 import React, { useState } from "react";
 
 const Pricing = () => {
-  const [billingCycle, setBillingCycle] = useState("yearly");
-  const [packageName, setPackageName] = useState("Personal");
-  const [amount, setAmount] = useState("15");
+ 
+  const [packageName, setPackageName] = useState("Plan 5");
+  const [amount, setAmount] = useState("5");
   const [currency, setCurrency] = useState("USD");
   const [paymentStatus, setPaymentStatus] = useState(null);
   const [error, setError] = useState(null);
 
   const handlePayNow = async (PkgName) => {
     setPackageName(PkgName);
-
     // Update amount based on billing cycle and package name
-    if (billingCycle === "yearly") {
-      if (PkgName === "Personal") {
-        setAmount("15");
-      } else if (PkgName === "Premium") {
-        setAmount("20");
-      } else {
+      if (PkgName === "Plan 5") {
+        setAmount("5");
+      } else if (PkgName === "Plan 10") {
+        setAmount("10");
+      } else if(pkgName === "Plan 30"){
         setAmount("30");
       }
-    } else {
-      if (PkgName === "Personal") {
-        setAmount("20");
-      } else if (PkgName === "Premium") {
-        setAmount("25");
-      } else {
-        setAmount("35");
-      }
-    }
+    
 
     // console.log(amount, packageName);
 
@@ -91,7 +81,7 @@ const Pricing = () => {
                   </h3>
                   <div className="text-white mb-10">500 credits</div>
                   <button
-                    onClick={() => handlePayNow("Personal")}
+                    onClick={() => handlePayNow("Plan 5")}
                     className="w-full max-w-full font-semibold text-[14px] tracking-wider font-heebo h-10 leading-10 px-[34px] uppercase text-center whitespace-nowrap rounded-[20px] overflow-hidden text-ellipsis bg-[#1c1925] text-[#c0bcca] border-[#8768f8] border-2"
                   >
                     Buy Personal
@@ -106,7 +96,7 @@ const Pricing = () => {
                   </h3>
                   <div className="text-white mb-10">1000 credits</div>
                   <button
-                    onClick={() => handlePayNow("Premium")}
+                    onClick={() => handlePayNow("Plan 10")}
                     className="w-full max-w-full font-semibold text-[14px] tracking-wider font-heebo h-10 leading-10 px-[34px] uppercase text-center whitespace-nowrap rounded-[20px] overflow-hidden text-ellipsis bg-[#1c1925] text-[#c0bcca] border-[#8768f8] border-2"
                   >
                     Buy Premium
@@ -121,7 +111,7 @@ const Pricing = () => {
                   </h3>
                   <div className="text-white mb-10">5000 credits</div>
                   <button
-                    onClick={() => handlePayNow("Enterprise")}
+                    onClick={() => handlePayNow("Plan 30")}
                     className="w-full max-w-full font-semibold text-[14px] tracking-wider font-heebo h-10 leading-10 px-[34px] uppercase text-center whitespace-nowrap rounded-[20px] overflow-hidden text-ellipsis bg-[#1c1925] text-[#c0bcca] border-[#8768f8] border-2"
                   >
                     Buy Enterprise
