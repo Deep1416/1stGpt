@@ -21,8 +21,6 @@ const Pricing = () => {
       }
     
 
-    // console.log(amount, packageName);
-
     try {
       const token = localStorage.getItem("token"); // Retrieve token from localStorage
 
@@ -51,8 +49,6 @@ const Pricing = () => {
     }
   };
 
- 
-
   return (
     <div className="pt-[93px] pb-[100px] bg-black">
       <div className="mb-[43px] text-center">
@@ -68,12 +64,11 @@ const Pricing = () => {
       <div className="mb-[111px]">
         <div className="w-full max-w-[1400px] px-10 mx-auto">
           <div>
-            <div className=" border border-[#312e37] bg-[#17151b]">
+            <div className="border border-[#312e37] bg-[#17151b]">
               <div className="-ml-[1px] flex text-center">
-                
-                <div className="w-[33%] max-w-[33%] pt-[35px] pb-10 px-[30px] border-l border-[#312e37]">
+                <div className="w-[50%] max-w-[50%] pt-[35px] pb-10 px-[30px] border-l border-[#312e37]">
                   <h2 className="text-[24px] mb-[10px] font-heebo text-[#c0bcca]">
-                    plan 5
+                    Plan 5
                   </h2>
                   <h3 className="font-heebo text-[14px] font-medium mb-[11px] text-[#c0bcca]">
                     <span className="text-4xl font-medium">$5</span> /month
@@ -86,9 +81,9 @@ const Pricing = () => {
                     Buy Personal
                   </button>
                 </div>
-                <div className="w-[33%] max-w-[33%] pt-[35px] pb-10 px-[30px] border-l border-[#312e37]">
+                <div className="w-[50%] max-w-[50%] pt-[35px] pb-10 px-[30px] border-l border-[#312e37]">
                   <h2 className="text-[24px] mb-[10px] font-heebo text-[#c0bcca]">
-                    Plan 10{" "}
+                    Plan 10
                   </h2>
                   <h3 className="font-heebo text-[14px] font-medium mb-[11px] text-[#c0bcca]">
                     <span className="text-4xl font-medium">$10</span> /month
@@ -101,7 +96,7 @@ const Pricing = () => {
                     Buy Premium
                   </button>
                 </div>
-                <div className="w-[33%] max-w-[33%] pt-[35px] pb-10 px-[30px] border-l border-[#312e37]">
+                <div className="w-[50%] max-w-[50%] pt-[35px] pb-10 px-[30px] border-l border-[#312e37]">
                   <h2 className="text-[24px] mb-[10px] font-heebo text-[#c0bcca]">
                     Plan 30
                   </h2>
@@ -113,7 +108,7 @@ const Pricing = () => {
                     onClick={() => handlePayNow("Plan 30")}
                     className="w-full max-w-full font-semibold text-[14px] tracking-wider font-heebo h-10 leading-10 px-[34px] uppercase text-center whitespace-nowrap rounded-[20px] overflow-hidden text-ellipsis bg-[#1c1925] text-[#c0bcca] border-[#8768f8] border-2"
                   >
-                    Buy Enterprise
+                    Buy Premium
                   </button>
                 </div>
               </div>
