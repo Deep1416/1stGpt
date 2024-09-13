@@ -88,8 +88,20 @@ const AuthModal = ({ isOpen, onClose }) => {
     }
   };
 
-  const handleGoogleLogin = () => {
-    window.location.href = 'https://free.1stgpt.ai/auth/google';
+  const handleGoogleLogin =  async () => {
+    try {
+      const res = await fetch("https://free.1stgpt.ai/auth/google")
+      const result = res.json();
+      console.log("google auth ----------------",result);
+    } catch (error) {
+      console.log("google auth error--------------",error);
+      
+      
+    }
+   
+    
+
+    // window.location.href = 'http://localhost:3000/auth/google';
   };
 
   if (!isOpen) return null;
