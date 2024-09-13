@@ -16,7 +16,7 @@ const Pricing = () => {
         setAmount("5");
       } else if (PkgName === "Plan 10") {
         setAmount("10");
-      } else if(pkgName === "Plan 30"){
+      } else if(PkgName === "Plan 30"){
         setAmount("30");
       }
     
@@ -44,15 +44,14 @@ const Pricing = () => {
         (link) => link.rel === "approval_url"
       ).href;
       window.location.href = approvalUrl;
+      setAmount("");
     } catch (error) {
       setError("Payment initiation failed. Please try again.");
       console.error("Payment initiation error:", error);
     }
   };
 
-  const handleBillingCycleChange = (cycle) => {
-    setBillingCycle(cycle);
-  };
+ 
 
   return (
     <div className="pt-[93px] pb-[100px] bg-black">
