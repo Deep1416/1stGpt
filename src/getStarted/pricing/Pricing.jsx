@@ -2,23 +2,24 @@ import axios from "axios";
 import React, { useState } from "react";
 
 const Pricing = () => {
-  const [packageName, setPackageName] = useState("Personal");
-  const [amount, setAmount] = useState("5"); // Default to Plan 5 amount
+ 
+  const [packageName, setPackageName] = useState("Plan 5");
+  const [amount, setAmount] = useState("5");
   const [currency, setCurrency] = useState("USD");
   const [paymentStatus, setPaymentStatus] = useState(null);
   const [error, setError] = useState(null);
 
   const handlePayNow = async (PkgName) => {
     setPackageName(PkgName);
-
-    // Update amount based on package name
-    if (PkgName === "Plan 5") {
-      setAmount("5");
-    } else if (PkgName === "Plan 10") {
-      setAmount("10");
-    } else if (PkgName ==="Plan 30") {
-      setAmount("30"); // For Enterprise plan
-    }
+    // Update amount based on billing cycle and package name
+      if (PkgName === "Plan 5") {
+        setAmount("5");
+      } else if (PkgName === "Plan 10") {
+        setAmount("10");
+      } else if(PkgName === "Plan 30"){
+        setAmount("30");
+      }
+    
 
     try {
       const token = localStorage.getItem("token"); // Retrieve token from localStorage
