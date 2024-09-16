@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addCoins } from '../../redux/addSlice';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 axios.defaults.withCredentials = true;
 
@@ -21,6 +23,8 @@ const AuthModal = ({ isOpen, onClose }) => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+ 
 
   const validate = () => {
     const newErrors = {};
@@ -46,7 +50,7 @@ const AuthModal = ({ isOpen, onClose }) => {
     setIsRobotChecked(!isRobotChecked);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmitold = async (e) => {
     e.preventDefault();
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
@@ -66,42 +70,94 @@ const AuthModal = ({ isOpen, onClose }) => {
         recaptchaToken: token,
       });
 
-      if (!isRegister && response?.data) {
+      if (response.data && !isRegister) {
         dispatch(addCoins(response?.data?.data?.user?.credit));
         localStorage.setItem('token', response?.data?.data?.accessToken);
         localStorage.setItem('userInfo', JSON.stringify(response?.data?.data?.user));
+        toast.success('Login successful!');
         setTimeout(() => {
           navigate('/get');
         }, 300);
       }
 
       if (isRegister) {
+        toast.success('Registration successful! Please log in.');
         setIsRegister(false);
       }
     } catch (error) {
       console.error(error);
       if (error.response && error.response.data) {
-        setErrors({ general: error.response.data.message });
+        const errorMsg = error.response.data.message;
+        if (errorMsg.includes('Username already exists')) {
+          toast.error('Username already exists. Please choose another.');
+        } else {
+          toast.error(errorMsg);
+        }
+        setErrors({ general: errorMsg });
       }
     } finally {
       setLoading(false);
     }
   };
 
-  const handleGoogleLogin =  async () => {
-    try {
-      const res = await fetch("https://free.1stgpt.ai/auth/google")
-      const result = res.json();
-      console.log("google auth ----------------",result);
-    } catch (error) {
-      console.log("google auth error--------------",error);
-      
-      
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
     }
-   
-    
+  
+    setErrors({});
+    setLoading(true);
+  
+    try {
+     
+  
+      const url = isRegister ? 'https://free.1stgpt.ai/v1/user/register' : 'https://free.1stgpt.ai/v1/user/login';
+      const response = await axios.post(url, formData);
+  
+      if (response.data && !isRegister) {
+        dispatch(addCoins(response?.data?.data?.user?.credit));
+        localStorage.setItem('token', response?.data?.data?.accessToken);
+        localStorage.setItem('userInfo', JSON.stringify(response?.data?.data?.user));
+        toast.success('Login successful!');
+        setTimeout(() => {
+          navigate('/get');
+        }, 300);
+      }
+  
+      if (isRegister) {
+        toast.success('Registration successful! Please log in.');
+        setIsRegister(false);
+      }
+    } catch (error) {
+      console.error(error);
+  
+      // Check for duplicate key error from MongoDB (E11000)
+      if (error.response && error.response.data) {
+        const errorMsg = error.response.data.error;
+        if (errorMsg.includes('E11000') && errorMsg.includes('username')) {
+          toast.error('Username already exists. Please choose another username.');
+        } else {
+          toast.error(errorMsg);
+        }
+        setErrors({ general: errorMsg });
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+  
 
-    // window.location.href = 'http://localhost:3000/auth/google';
+  const handleGoogleLogin = async () => {
+    try {
+      const res = await fetch('https://free.1stgpt.ai/auth/google');
+      const result = res.json();
+      console.log('google auth ----------------', result);
+    } catch (error) {
+      console.log('google auth error--------------', error);
+    }
   };
 
   if (!isOpen) return null;
@@ -109,6 +165,7 @@ const AuthModal = ({ isOpen, onClose }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur">
       <div className="relative bg-white bg-opacity-90 p-8 rounded-lg shadow-lg w-full max-w-md mx-4 sm:mx-auto">
+        <ToastContainer /> {/* Toast container for notifications */}
         <button
           className="absolute top-3 right-3 text-gray-600 hover:text-gray-900 text-2xl"
           onClick={onClose}
@@ -164,8 +221,6 @@ const AuthModal = ({ isOpen, onClose }) => {
                 />
                 {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username}</p>}
               </div>
-             
-              
             </>
           )}
           <div>
@@ -198,75 +253,45 @@ const AuthModal = ({ isOpen, onClose }) => {
             />
             {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
           </div>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              id="robotCheck"
+              checked={isRobotChecked}
+              onChange={handleCheckboxChange}
+              className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+            />
+            <label htmlFor="robotCheck" className="ml-2 block text-sm text-gray-900">
+              I'm not a robot
+            </label>
+            {errors.robot && <p className="text-red-500 text-sm mt-1">{errors.robot}</p>}
+          </div>
+          <div className="mt-4">
             <button
               type="submit"
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               disabled={loading}
+              className={`w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${loading ? 'bg-gray-400' : 'bg-indigo-600 hover:bg-indigo-700'} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
             >
-              {loading ? (
-                <span>Loading...</span>
-              ) : (
-                <span>{isRegister ? 'Register' : 'Login'}</span>
-              )}
-            </button>
-            <button
-              type="button"
-              onClick={onClose}
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-              disabled={loading}
-            >
-              Cancel
+              {loading ? 'Processing...' : isRegister ? 'Register' : 'Login'}
             </button>
           </div>
-          {errors.general && <p className="text-red-500 text-sm mt-1">{errors.general}</p>}
+          <div className="text-sm text-center mt-4">
+            {isRegister ? 'Already have an account?' : "Don't have an account?"}
+            <button
+              type="button"
+              className="text-indigo-600 hover:text-indigo-500 ml-1"
+              onClick={() => setIsRegister(!isRegister)}
+            >
+              {isRegister ? 'Login' : 'Register'}
+            </button>
+          </div>
         </form>
-        <div className="mt-4 text-center">
-          {isRegister ? (
-            <p className="text-sm text-gray-600">
-              Already have an account?{' '}
-              <button
-                className="text-indigo-600 hover:text-indigo-900"
-                onClick={() => setIsRegister(false)}
-                disabled={loading}
-              >
-                Click here to login
-              </button>
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  id="robotCheck"
-                  checked={isRobotChecked}
-                  onChange={handleCheckboxChange}
-                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-                />
-                <label htmlFor="robotCheck" className="ml-2 block text-sm text-gray-900">
-                  I'm not a robot
-                </label>
-              </div>
-              {errors.robot && <p className="text-red-500 text-sm mt-1">{errors.robot}</p>}
-            </p>
-          ) : (
-            <p className="text-sm text-gray-600">
-              Don't have an account?{' '}
-              <button
-                className="text-indigo-600 hover:text-indigo-900"
-                onClick={() => setIsRegister(true)}
-                disabled={loading}
-              >
-                Click here to register
-              </button>
-              
-            </p>
-          )}
-        </div>
-        <div className="mt-4 text-center">
+        <div className="mt-4">
           <button
-            type="button"
+            className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
             onClick={handleGoogleLogin}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
           >
-            Sign in with Google
+            Login with Google
           </button>
         </div>
       </div>

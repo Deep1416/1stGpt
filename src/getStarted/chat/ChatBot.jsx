@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { FiSend, FiX } from "react-icons/fi";
+import { FiSend, FiX, FiUpload } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { addCoins, deductCoin } from "./../../redux/addSlice";
@@ -8,7 +8,9 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { materialDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { motion } from "framer-motion";
 import { marked } from "marked";
-import DOMPurify from 'dompurify'; // To sanitize HTML content
+import DOMPurify from 'dompurify';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // To sanitize HTML content
 
 const ChatBot = () => {
   const [messages, setMessages] = useState([
@@ -25,29 +27,48 @@ const ChatBot = () => {
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  // const [showPopup, setShowPopup] = useState(false); // State for the popup
+  const [file, setFile] = useState(null); // State to store the selected file
   const messagesEndRef = useRef(null);
   const dispatch = useDispatch();
   const selectedModel = useSelector((state) => state?.model?.selectedModel);
   const defaultModelName = "gpt";
   const modelName = selectedModel?.modelName || defaultModelName;
   const coins = useSelector((state) => state?.data?.coinBalance);
-  
+  const [showPopup, setShowPopup] = useState('');
+
   const fetchResponse = async (query) => {
     setLoading(true);
     const token = localStorage.getItem("token");
 
     try {
+      const formData = new FormData();
+      formData.append("query", query);
+      if (modelName === "gemini" && file) {
+        formData.append("file", file);
+      }
+
       const response = await axios.post(
         `https://free.1stgpt.ai/v1/ai/${modelName}`,
-        { query },
+        formData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data",
           },
         }
       );
+
+      // Check if the response indicates insufficient credits
+      if (response?.data?.statusCode === 403 && response?.data?.message === "Insufficient credits") {
+        toast.error("Insufficient credits. Please recharge.");
+        return;
+      }
+
+      // Check for invalid signature error
+      if (response?.data?.success === false && response?.data?.error === "invalid signature") {
+        toast.error("Invalid signature. Please log in again.");
+        return;
+      }
 
       let reply = null;
       if (modelName === "lama") {
@@ -62,6 +83,11 @@ const ChatBot = () => {
       ]);
     } catch (error) {
       console.error("Error fetching response:", error);
+
+      // Displaying the exact error in a toast
+      const errorMessage = error?.response?.data?.message || error.message || "An error occurred while fetching the response.";
+      toast.error(`Error: ${errorMessage}`);
+
       setMessages((prevMessages) => [
         ...prevMessages,
         { type: "bot", text: "Sorry, I couldn't fetch a response." },
@@ -75,7 +101,7 @@ const ChatBot = () => {
     const token = localStorage.getItem("token");
 
     try {
-      const response = await axios.get(`https://free.1stgpt.ai/v1/user/${token}`, {
+      const response = await axios.get(`https://free.1stgpt.ai/v1/user/token`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -83,7 +109,10 @@ const ChatBot = () => {
 
       dispatch(addCoins(response?.data?.data?.Credit));
     } catch (error) {
-      console.log("from coin endpoint", error);
+      console.log("Error fetching coin balance:", error);
+
+      const errorMessage = error?.response?.data?.message || error.message || "An error occurred while fetching coin balance.";
+      toast.error(`Coin Fetch Error: ${errorMessage}`);
     }
   };
 
@@ -93,7 +122,7 @@ const ChatBot = () => {
         setShowPopup(true); // Show popup if credits are insufficient
         return;
       }
-      
+
       setMessages((prevMessages) => [
         ...prevMessages,
         { type: "user", text: input },
@@ -101,17 +130,18 @@ const ChatBot = () => {
       setInput("");
       await fetchCoin(); // Ensure fetchCoin completes before fetching response
       await fetchResponse(input);
+
       if (coins > 0) {
-        if(modelName==='lama'){
+        if (modelName === 'lama') {
           dispatch(deductCoin(8));
-        }else if(modelName==='gpt'){
+        } else if (modelName === 'gpt') {
           dispatch(deductCoin(4));
-        }else {
+        } else if (modelName === 'gemini') {
+          dispatch(deductCoin(10)); // Deduct 10 coins for gemini
+        } else {
           dispatch(deductCoin(1)); // Deduct 1 coin after fetching the response
         }
-        }
-       
-
+      }
     }
   };
 
@@ -198,52 +228,76 @@ const ChatBot = () => {
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.5 }}
-                className="text-[#7e7a86] py-8"
+                transition={{ duration: 0.3 }}
+                className="bg-[#17151b] text-[#7e7a86] border-[#312e37] border px-4 py-8 rounded-lg relative mt-3"
               >
-                ...loading
+                <span className="bg-[#2B2830] text-[#7E7A68] px-3 py-0.5 rounded-full font-bold text-[12px] absolute -top-3">
+                  BOT
+                </span>
+                <p className="text-[#7e7a86]">...loading</p>
               </motion.div>
             )}
             <div ref={messagesEndRef} />
           </div>
-        </div>
-      </div>
-      <div className="px-10 rounded-sm sticky z-50 bottom-0 bg-[#0f0e11] flex gap-1 mx-auto p-5">
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyPress={handleKeyPress}
-          placeholder="Send a message..."
-          className="bg-[#1f1f2e] text-white px-4 py-2 w-full rounded outline-none"
-        />
-        <button
-          onClick={handleSend}
-          className="bg-[#1f1f2e] text-white px-4 py-2 rounded-r-lg flex items-center gap-2"
-        >
-          <FiSend size={20} />
-          <div className="text-[10px]">{coins} Credits</div>
-        </button>
-      </div>
-      {/* Popup for insufficient credits */}
-      {/* {showPopup && (
-        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                    <div className="bg-white p-6 rounded-lg relative max-w-sm mx-auto">
+
+          <div className="flex justify-between items-center w-full py-3 border-t border-[#2b2830] bg-[#0f0e11] absolute bottom-0 left-0">
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyPress={handleKeyPress}
+              className="w-full text-white bg-[#17151b] px-3 py-2 border border-[#2b2830] rounded-md focus:outline-none"
+              placeholder="Enter a message..."
+            />
+
             <button
-              onClick={() => setShowPopup(false)}
-              className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+              className="ml-2 bg-[#7c5fe3] text-white px-4 py-2 rounded-md hover:bg-[#6b4edc] focus:outline-none"
+              onClick={handleSend}
+              disabled={loading}
             >
-              <FiX size={20} />
+              {loading ? "Loading..." : <FiSend />}
             </button>
-            <h2 className="text-lg font-semibold text-gray-800">
-              Insufficient Credits
-            </h2>
-            <p className="mt-2 text-gray-600">
-              You need more credits to send a message. Please add credits to continue.
-            </p>
+
+            {/* Show file upload button when modelName is 'gemini' */}
+            {modelName === "gemini" && (
+              <label
+                htmlFor="file-upload"
+                className="ml-2 cursor-pointer text-white px-4 py-2 rounded-md bg-[#6b4edc] hover:bg-[#5a3dbd] flex items-center"
+              >
+                <FiUpload className="mr-2" />
+                Upload File
+                <input
+                  id="file-upload"
+                  type="file"
+                  onChange={(e) => setFile(e.target.files[0])}
+                  className="hidden"
+                />
+              </label>
+            )}
           </div>
         </div>
-      )} */}
+
+        {/* Insufficient Credits Popup */}
+        {showPopup && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex justify-center items-center"
+          >
+            <div className="bg-white text-black p-6 rounded-lg shadow-lg relative">
+              <button
+                onClick={() => setShowPopup(false)}
+                className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+              >
+                <FiX />
+              </button>
+              <p className="text-lg">Insufficient credits</p>
+            </div>
+          </motion.div>
+        )}
+      </div>
+      <ToastContainer position="top-right" autoClose={3000} />
     </>
   );
 };

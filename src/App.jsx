@@ -1,4 +1,5 @@
-import React from 'react'
+// import React from 'react'
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from './pages/HomePage';
 import Pricing from './getStarted/pricing/Pricing';
@@ -8,6 +9,20 @@ import ChatBot from './getStarted/chat/ChatBot'
 import Profile from './getStarted/userProfile/Profile'
 
 const App = () => {
+
+  useEffect(() => {
+    // Check if token is expired on page load
+    const token = localStorage.getItem('token');
+    if (token) {
+      const payload = JSON.parse(atob(token.split('.')[1])); // Decoding JWT token
+      if (payload.exp * 1000 < Date.now()) {
+        // Token is expired
+        localStorage.removeItem('token');
+        localStorage.removeItem('userInfo');
+      }
+    }
+  }, []);
+
   return (
     <div>
       <BrowserRouter>
