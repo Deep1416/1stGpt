@@ -9,7 +9,7 @@ import ChatBot from './getStarted/chat/ChatBot'
 import Profile from './getStarted/userProfile/Profile'
 
 const App = () => {
-  const navigate = useNavigate();
+ 
 
   useEffect(() => {
     // Check if token is expired on page load
@@ -21,7 +21,7 @@ const App = () => {
         // Token is expired
         localStorage.removeItem('token');
         localStorage.removeItem('userInfo');
-        navigate('/');
+    
       }
     }
   } ,[]);
