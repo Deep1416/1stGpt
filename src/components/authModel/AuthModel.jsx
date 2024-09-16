@@ -74,6 +74,7 @@ const AuthModal = ({ isOpen, onClose }) => {
         dispatch(addCoins(response?.data?.data?.user?.credit));
         localStorage.setItem('token', response?.data?.data?.accessToken);
         localStorage.setItem('userInfo', JSON.stringify(response?.data?.data?.user));
+        toast.dismiss();
         toast.success('Login successful!');
         setTimeout(() => {
           navigate('/get');
@@ -81,6 +82,7 @@ const AuthModal = ({ isOpen, onClose }) => {
       }
 
       if (isRegister) {
+        toast.dismiss();
         toast.success('Registration successful! Please log in.');
         setIsRegister(false);
       }
@@ -89,8 +91,10 @@ const AuthModal = ({ isOpen, onClose }) => {
       if (error.response && error.response.data) {
         const errorMsg = error.response.data.message;
         if (errorMsg.includes('Username already exists')) {
+          toast.dismiss();
           toast.error('Username already exists. Please choose another.');
         } else {
+          toast.dismiss();
           toast.error(errorMsg);
         }
         setErrors({ general: errorMsg });
@@ -121,6 +125,7 @@ const AuthModal = ({ isOpen, onClose }) => {
         dispatch(addCoins(response?.data?.data?.user?.credit));
         localStorage.setItem('token', response?.data?.data?.accessToken);
         localStorage.setItem('userInfo', JSON.stringify(response?.data?.data?.user));
+        toast.dismiss();
         toast.success('Login successful!');
         setTimeout(() => {
           navigate('/get');
@@ -128,6 +133,7 @@ const AuthModal = ({ isOpen, onClose }) => {
       }
   
       if (isRegister) {
+        toast.dismiss();
         toast.success('Registration successful! Please log in.');
         setIsRegister(false);
       }
@@ -138,8 +144,10 @@ const AuthModal = ({ isOpen, onClose }) => {
       if (error.response && error.response.data) {
         const errorMsg = error.response.data.error;
         if (errorMsg.includes('E11000') && errorMsg.includes('username')) {
+          toast.dismiss();
           toast.error('Username already exists. Please choose another username.');
         } else {
+          toast.dismiss();
           toast.error(errorMsg);
         }
         setErrors({ general: errorMsg });

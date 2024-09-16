@@ -2,31 +2,26 @@ import axios from "axios";
 import React, { useState } from "react";
 
 const Pricing = () => {
- 
-  const [packageName, setPackageName] = useState("Plan 5");
-  const [amount, setAmount] = useState("5");
-  const [currency, setCurrency] = useState("USD");
+  const [packageName, setPackageName] = useState("");
+  const [amount, setAmount] = useState("");
+  const [currency] = useState("USD");
   const [paymentStatus, setPaymentStatus] = useState(null);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false); // State to manage loading for each plan
 
-  const handlePayNow = async (PkgName) => {
+  const handlePayNow = async (PkgName, PkgAmount) => {
     setPackageName(PkgName);
-    // Update amount based on billing cycle and package name
-      if (PkgName === "Plan 5") {
-        setAmount("5");
-      } else if (PkgName === "Plan 10") {
-        setAmount("10");
-      } else if(PkgName === "Plan 30"){
-        setAmount("30");
-      }
-    
+    setAmount(PkgAmount);
+
+    setLoading(true); // Start loading state when the user clicks the button
+    setError(null);   // Clear previous errors
 
     try {
       const token = localStorage.getItem("token"); // Retrieve token from localStorage
 
       const response = await axios.post(
         "https://free.1stgpt.ai/v1/pay",
-        { currency, amount, packageName },
+        { currency, amount: PkgAmount, packageName: PkgName },
         {
           headers: {
             Authorization: `Bearer ${token}`, // Include token in headers
@@ -35,15 +30,14 @@ const Pricing = () => {
         }
       );
 
-      console.log(response);
-
       const { links } = response.data.data;
-      const approvalUrl = links.find(
-        (link) => link.rel === "approval_url"
-      ).href;
-      window.location.href = approvalUrl;
+      const approvalUrl = links.find((link) => link.rel === "approval_url").href;
+      window.location.href = approvalUrl; // Redirect user to payment approval page
+
       setAmount("");
+      setLoading(false); // End loading state after request completes
     } catch (error) {
+      setLoading(false); // End loading state if there's an error
       setError("Payment initiation failed. Please try again.");
       console.error("Payment initiation error:", error);
     }
@@ -66,6 +60,7 @@ const Pricing = () => {
           <div>
             <div className="border border-[#312e37] bg-[#17151b]">
               <div className="-ml-[1px] flex text-center">
+                {/* Plan 5 */}
                 <div className="w-[50%] max-w-[50%] pt-[35px] pb-10 px-[30px] border-l border-[#312e37]">
                   <h2 className="text-[24px] mb-[10px] font-heebo text-[#c0bcca]">
                     Plan 5
@@ -75,12 +70,14 @@ const Pricing = () => {
                   </h3>
                   <div className="text-white mb-10">500 credits</div>
                   <button
-                    onClick={() => handlePayNow("Plan 5")}
-                    className="w-full max-w-full font-semibold text-[14px] tracking-wider font-heebo h-10 leading-10 px-[34px] uppercase text-center whitespace-nowrap rounded-[20px] overflow-hidden text-ellipsis bg-[#1c1925] text-[#c0bcca] border-[#8768f8] border-2"
+                    onClick={() => handlePayNow("Plan 5", "5")}
+                    className={`w-full max-w-full font-semibold text-[14px] tracking-wider font-heebo h-10 leading-10 px-[34px] uppercase text-center whitespace-nowrap rounded-[20px] overflow-hidden text-ellipsis bg-[#1c1925] text-[#c0bcca] border-[#8768f8] border-2 ${loading ? 'cursor-not-allowed opacity-50' : ''}`}
+                    disabled={loading} // Disable button while loading
                   >
-                    Buy Personal
+                    {loading && packageName === "Plan 5" ? "Processing..." : "Buy Personal"}
                   </button>
                 </div>
+                {/* Plan 10 */}
                 <div className="w-[50%] max-w-[50%] pt-[35px] pb-10 px-[30px] border-l border-[#312e37]">
                   <h2 className="text-[24px] mb-[10px] font-heebo text-[#c0bcca]">
                     Plan 10
@@ -90,12 +87,14 @@ const Pricing = () => {
                   </h3>
                   <div className="text-white mb-10">1000 credits</div>
                   <button
-                    onClick={() => handlePayNow("Plan 10")}
-                    className="w-full max-w-full font-semibold text-[14px] tracking-wider font-heebo h-10 leading-10 px-[34px] uppercase text-center whitespace-nowrap rounded-[20px] overflow-hidden text-ellipsis bg-[#1c1925] text-[#c0bcca] border-[#8768f8] border-2"
+                    onClick={() => handlePayNow("Plan 10", "10")}
+                    className={`w-full max-w-full font-semibold text-[14px] tracking-wider font-heebo h-10 leading-10 px-[34px] uppercase text-center whitespace-nowrap rounded-[20px] overflow-hidden text-ellipsis bg-[#1c1925] text-[#c0bcca] border-[#8768f8] border-2 ${loading ? 'cursor-not-allowed opacity-50' : ''}`}
+                    disabled={loading} // Disable button while loading
                   >
-                    Buy Premium
+                    {loading && packageName === "Plan 10" ? "Processing..." : "Buy Premium"}
                   </button>
                 </div>
+                {/* Plan 30 */}
                 <div className="w-[50%] max-w-[50%] pt-[35px] pb-10 px-[30px] border-l border-[#312e37]">
                   <h2 className="text-[24px] mb-[10px] font-heebo text-[#c0bcca]">
                     Plan 30
@@ -105,15 +104,17 @@ const Pricing = () => {
                   </h3>
                   <div className="text-white mb-10">5000 credits</div>
                   <button
-                    onClick={() => handlePayNow("Plan 30")}
-                    className="w-full max-w-full font-semibold text-[14px] tracking-wider font-heebo h-10 leading-10 px-[34px] uppercase text-center whitespace-nowrap rounded-[20px] overflow-hidden text-ellipsis bg-[#1c1925] text-[#c0bcca] border-[#8768f8] border-2"
+                    onClick={() => handlePayNow("Plan 30", "30")}
+                    className={`w-full max-w-full font-semibold text-[14px] tracking-wider font-heebo h-10 leading-10 px-[34px] uppercase text-center whitespace-nowrap rounded-[20px] overflow-hidden text-ellipsis bg-[#1c1925] text-[#c0bcca] border-[#8768f8] border-2 ${loading ? 'cursor-not-allowed opacity-50' : ''}`}
+                    disabled={loading} // Disable button while loading
                   >
-                    Buy Premium
+                    {loading && packageName === "Plan 30" ? "Processing..." : "Buy Premium"}
                   </button>
                 </div>
               </div>
             </div>
           </div>
+          {error && <p className="text-red-500">{error}</p>}
         </div>
       </div>
     </div>
