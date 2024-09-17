@@ -995,7 +995,7 @@ const ChatBot = () => {
       const formData = new FormData();
       formData.append("query", query);
       if (modelName === "gemini" && file) {
-        formData.append("file", file);
+        formData.append("file1", file);
       }
   
       const response = await axios.post(
@@ -1085,7 +1085,7 @@ const ChatBot = () => {
         } else if (modelName === 'gpt') {
           dispatch(deductCoin(4));
         } else if (modelName === 'gemini') {
-          dispatch(deductCoin(10)); // Deduct 10 coins for gemini
+          dispatch(deductCoin(1)); // Deduct 10 coins for gemini
         } else {
           dispatch(deductCoin(1)); // Deduct 1 coin after fetching the response
         }
