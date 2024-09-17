@@ -48,15 +48,12 @@ const Sidebar = ({ isSidebarCollapsed, toggleSidebar,totalCoins,setTotalCoins })
           </button>
         </div>
       </div>
-      <div className="p-5 border-b border-[#312e37]">
+      <div className="p-5 border-b border-[#312e37] text-center">
         <Link to={"/get"}>
-          <div className="flex items-center gap-4 bg-[#2b2830] py-3 pr-[10px] rounded-md pl-4">
-            <div className="w-6 h-6 rounded-full bg-[#454449] flex justify-center items-center">
-              <MdAdd className="text-white" />
-            </div>
+          <div className="flex items-center justify-center gap-4 bg-[#2b2830] py-3 pr-[10px] rounded-md pl-3">
             {!isSidebarCollapsed && (
-              <div className="uppercase text-[14px] font-medium font-heebo text-white">
-                New chat
+              <div className="uppercase text-[14px] font-medium font-heebo text-white text-center">
+                chat
               </div>
             )}
           </div>
